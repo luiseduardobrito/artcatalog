@@ -5,11 +5,14 @@ import android.support.v7.app.ActionBar;
 import android.text.SpannableString;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.devnup.artcatalog.R;
+import com.devnup.artcatalog.drawer.DrawerItem;
+import com.devnup.artcatalog.drawer.DrawerItem_;
 import com.devnup.artcatalog.view.AlphaForegroundColorSpan;
 import com.devnup.artcatalog.view.KenBurnsView;
 import com.devnup.artcatalog.ws.model.ImageModel;
@@ -88,14 +91,58 @@ public class ArtistActivity extends BaseActivity {
 
     private void setupListView() {
 
-        ArrayList<String> FAKES = new ArrayList<String>();
-        for (int i = 0; i < 1000; i++) {
-            FAKES.add("entry " + i);
+        final ArrayList<String> infoMap = new ArrayList<String>();
+
+        infoMap.add("Freebase ID: " + artist.getId());
+        infoMap.add("Name: " + artist.getType());
+
+        StringBuilder artFormsString = new StringBuilder();
+
+        for (String form : artist.getArtForms()) {
+            artFormsString.append(form);
+        }
+
+        infoMap.add("Art Forms: " + artFormsString.toString());
+
+        for(int i = 0; i < 100; i++) {
+            infoMap.add("Empty entry #" + String.valueOf(i));
         }
 
         mPlaceHolderView = getLayoutInflater().inflate(R.layout.view_header_placeholder, mListView, false);
         mListView.addHeaderView(mPlaceHolderView);
-        mListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, FAKES));
+        mListView.setAdapter(new BaseAdapter() {
+
+            @Override
+            public int getCount() {
+                return infoMap.size();
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return infoMap.get(position);
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                DrawerItem view;
+
+                if (convertView != null && convertView instanceof DrawerItem) {
+                    view = (DrawerItem) convertView;
+                } else {
+                    view = DrawerItem_.build(ArtistActivity.this);
+                }
+
+                view.setLabel(infoMap.get(position));
+                return view;
+            }
+        });
+
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {

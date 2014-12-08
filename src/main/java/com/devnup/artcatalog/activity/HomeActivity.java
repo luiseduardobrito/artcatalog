@@ -50,6 +50,7 @@ public class HomeActivity extends BaseActivity {
             "\"type\": \"/visual_art/visual_artist\",   " +
             "\"id\": null," +
             "\"name\": null," +
+            "\"/visual_art/visual_artist/art_forms\": []," +
             "\"limit\": 20," +
             "\"/common/topic/image\" : [{" +
             "  \"id\" : null," +

@@ -24,6 +24,18 @@ public class VisualArtistModel extends BaseModel {
     @JsonProperty("/common/topic/image")
     List<ImageModel> image;
 
+    public void setArtForms(List<String> artForms) {
+        this.artForms = artForms;
+    }
+
+    public List<String> getArtForms() {
+
+        return artForms;
+    }
+
+    @JsonProperty("/visual_art/visual_artist/art_forms")
+    List<String> artForms;
+
     VisualArtistModel() {
     }
 
