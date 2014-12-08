@@ -1,4 +1,4 @@
-package com.devnup.artcatalog.ws.service;
+package com.devnup.artcatalog.ws.template;
 
 import com.devnup.artcatalog.ws.response.MQLReadResponse;
 
@@ -14,8 +14,11 @@ import org.springframework.http.converter.json.MappingJacksonHttpMessageConverte
 @Rest(converters = {MappingJacksonHttpMessageConverter.class}, rootUrl = "")
 public interface ArtRestTemplate {
 
-    @Get("https://www.googleapis.com/freebase/v1/mqlread?query={query}")
+    @Get("https://www.googleapis.com/freebase/v1/mqlread?query={query}&cursor")
     public MQLReadResponse readUsingMQL(String query);
+
+    @Get("https://www.googleapis.com/freebase/v1/mqlread?query={query}&cursor={cursor}")
+    public MQLReadResponse readUsingMQL(String query, String cursor);
 
     @Get("https://usercontent.googleapis.com/freebase/v1/image{id}?maxwidth=225&maxheight=225&mode=fillcropmid")
     public Resource getImage(String id);

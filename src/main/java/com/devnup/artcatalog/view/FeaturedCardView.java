@@ -17,7 +17,7 @@ import org.androidannotations.annotations.ViewById;
  * @since 12/7/14.
  */
 @EViewGroup(R.layout.view_card)
-public class SampleCardView extends CardView {
+public class FeaturedCardView extends CardView {
 
     @ViewById(R.id.title)
     TextView mTitle;
@@ -25,15 +25,15 @@ public class SampleCardView extends CardView {
     @ViewById(R.id.image)
     ImageView mImage;
 
-    public SampleCardView(Context context) {
+    public FeaturedCardView(Context context) {
         super(context);
     }
 
-    public SampleCardView(Context context, AttributeSet attrs) {
+    public FeaturedCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SampleCardView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FeaturedCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

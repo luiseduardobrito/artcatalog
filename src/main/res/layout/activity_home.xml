@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <!-- Main layout -->
-        <ListView
+        <com.devnup.artcatalog.view.CardListView_
             android:id="@+id/card_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"/>

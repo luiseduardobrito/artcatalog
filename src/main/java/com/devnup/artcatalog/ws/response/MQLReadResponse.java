@@ -15,6 +15,9 @@ public class MQLReadResponse extends BaseResponse {
     @JsonProperty("result")
     List<VisualArtistModel> result;
 
+    @JsonProperty("cursor")
+    String cursor;
+
     MQLReadResponse() {
     }
 
@@ -24,5 +27,13 @@ public class MQLReadResponse extends BaseResponse {
 
     public void setResult(List<VisualArtistModel> result) {
         this.result = result;
+    }
+
+    public String getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(String cursor) {
+        this.cursor = cursor;
     }
 }

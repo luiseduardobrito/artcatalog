@@ -30,6 +30,11 @@ public class CardListAdapter extends BaseAdapter {
         return mList;
     }
 
+    public void setCardList(List<CardView> mList) {
+        this.mList = mList;
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return mList.size();
