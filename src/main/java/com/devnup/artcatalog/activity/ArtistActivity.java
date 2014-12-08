@@ -57,7 +57,7 @@ public class ArtistActivity extends BaseActivity {
     @AfterViews
     void initViews() {
 
-        initDrawer();
+        // initDrawer();
 
         int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
         mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
@@ -124,12 +124,12 @@ public class ArtistActivity extends BaseActivity {
         //mSpannableString.setSpan(mAlphaForegroundColorSpan, 0, mSpannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         //getSupportActionBar().setTitle(mSpannableString);
 
-        //int newAlpha = (int) ((1 - alpha) * 255);
-        //mActionBarBackgroundDrawable.setAlpha(newAlpha);
-        // mToolbar.setBackground(mActionBarBackgroundDrawable);
+        int newAlpha = (int) (alpha * 255);
+        mActionBarBackgroundDrawable.setAlpha(newAlpha);
+        mToolbar.setBackground(mActionBarBackgroundDrawable);
 
-        float newY = -(mToolbar.getHeight() * alpha);
-        mToolbar.setY(newY);
+        //float newY = -(mToolbar.getHeight() * alpha);
+        //mToolbar.setY(newY);
     }
 
     public static float clamp(float value, float min, float max) {
