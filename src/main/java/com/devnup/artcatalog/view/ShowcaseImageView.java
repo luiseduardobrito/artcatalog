@@ -1,7 +1,5 @@
 package com.devnup.artcatalog.view;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -31,7 +29,8 @@ public class ShowcaseImageView extends FrameLayout {
 
     private final Random random = new Random();
     private int mSwapMs = 10000;
-    private int mFadeInOutMs = 400;
+    private int mFadeInOutMs = getResources().getInteger(
+            android.R.integer.config_mediumAnimTime);
 
     private float maxScaleFactor = 1.5F;
     private float minScaleFactor = 1.2F;
@@ -90,26 +89,34 @@ public class ShowcaseImageView extends FrameLayout {
 
     private void swapImage() {
 
-        Log.d(TAG, "swapImage active=" + mActiveImageIndex);
-
         int inactiveIndex = mActiveImageIndex;
         mActiveImageIndex = (1 + mActiveImageIndex) % mImageViews.size();
-        Log.d(TAG, "new active=" + mActiveImageIndex);
 
         final ImageView activeImageView = mImageViews.get(mActiveImageIndex);
         activeImageView.setAlpha(0.0f);
-        ImageView inactiveImageView = mImageViews.get(inactiveIndex);
-
         animate(activeImageView);
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.setDuration(mFadeInOutMs);
-        animatorSet.playTogether(
-                ObjectAnimator.ofFloat(inactiveImageView, "alpha", 1.0f, 0.0f),
-                ObjectAnimator.ofFloat(activeImageView, "alpha", 0.0f, 1.0f)
-        );
+        if (inactiveIndex > 0) {
 
-        animatorSet.start();
+            ImageView inactiveImageView = mImageViews.get(inactiveIndex);
+            inactiveImageView.animate()
+                    .alpha(0f)
+                    .setDuration(mFadeInOutMs)
+                    .setListener(null);
+
+            activeImageView.animate()
+                    .alpha(1f)
+                    .setDuration(mFadeInOutMs)
+                    .setListener(null);
+
+        } else {
+
+            activeImageView.setAlpha(0f);
+            activeImageView.animate()
+                    .alpha(1f)
+                    .setDuration(mFadeInOutMs)
+                    .setListener(null);
+        }
     }
 
     private void start(View view, long duration, float fromScale, float toScale, float fromTranslationX, float fromTranslationY, float toTranslationX, float toTranslationY) {
