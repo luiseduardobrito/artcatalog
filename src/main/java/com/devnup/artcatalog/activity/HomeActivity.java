@@ -24,8 +24,8 @@ import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
 import com.devnup.artcatalog.view.CardListAdapter;
-import com.devnup.artcatalog.view.FeaturedCardView;
-import com.devnup.artcatalog.view.FeaturedCardView_;
+import com.devnup.artcatalog.view.SampleCardView;
+import com.devnup.artcatalog.view.SampleCardView_;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
 import com.devnup.artcatalog.ws.response.MQLReadResponse;
 import com.devnup.artcatalog.ws.service.ArtRestTemplate;
@@ -53,7 +53,14 @@ public class HomeActivity extends BaseActivity {
     @AfterViews
     void init() {
         super.init();
-        performQuery("[{\"type\": \"/visual_art/visual_artist\",   \"id\": null,   \"name\": null}]");
+        performQuery("[{" +
+                "\"type\": \"/visual_art/visual_artist\",   " +
+                "\"id\": null," +
+                "\"name\": null," +
+                "\"/common/topic/image\" : [{" +
+                "  \"id\" : null," +
+                "  \"mid\": null" +
+                "}]}]");
     }
 
     @Override
@@ -80,8 +87,13 @@ public class HomeActivity extends BaseActivity {
         List<CardView> cardList = new ArrayList<CardView>();
 
         for (VisualArtistModel artist : response.getResult()) {
-            FeaturedCardView card = FeaturedCardView_.build(this);
-            card.setTitle(artist.getName() + "(" + artist.getId() + ")");
+            SampleCardView card = SampleCardView_.build(this);
+            card.setTitle(artist.getName());
+
+            if (artist.getImage() != null && artist.getImage().size() > 0) {
+                String image_id = artist.getImage().get(0).getId();
+                card.setImageUrl("https://usercontent.googleapis.com/freebase/v1/image" + image_id + "?maxwidth=225&maxheight=225&mode=fillcropmid");
+            }
             cardList.add(card);
         }
 

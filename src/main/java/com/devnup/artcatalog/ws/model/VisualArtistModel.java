@@ -1,11 +1,15 @@
 package com.devnup.artcatalog.ws.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
+
+import java.util.List;
 
 /**
  * @author luiseduardobrito
  * @since 12/7/14.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VisualArtistModel extends BaseModel {
 
     @JsonProperty("id")
@@ -17,7 +21,18 @@ public class VisualArtistModel extends BaseModel {
     @JsonProperty("type")
     String type;
 
+    @JsonProperty("/common/topic/image")
+    List<ImageModel> image;
+
     VisualArtistModel() {
+    }
+
+    public List<ImageModel> getImage() {
+        return image;
+    }
+
+    public void setImage(List<ImageModel> image) {
+        this.image = image;
     }
 
     public String getId() {
