@@ -1,4 +1,4 @@
-package com.devnup.artcatalog;
+package com.devnup.artcatalog.material;
 
 import android.graphics.drawable.Drawable;
 import android.os.Build;

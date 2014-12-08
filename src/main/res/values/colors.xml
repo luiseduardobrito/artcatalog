@@ -15,6 +15,11 @@
   -->
 
 <resources>
+
+    <color name="white">#FAFAFA</color>
+    <color name="black">#0A0A0A</color>
+
+
     <color name="colorPrimary">@color/material_blue_grey_800</color>
     <color name="colorPrimaryDark">@color/material_blue_grey_900</color>
 

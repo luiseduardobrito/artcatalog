@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.devnup.artcatalog;
+package com.devnup.artcatalog.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -24,34 +24,49 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.devnup.artcatalog.R;
+import com.devnup.artcatalog.drawer.DrawerAdapter;
+import com.devnup.artcatalog.material.SupportActionBarDrawerToggle;
 import com.ikimuhendis.ldrawer.DrawerArrowDrawable;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
+@EActivity
 public abstract class BaseActivity extends ActionBarActivity {
 
+    @ViewById(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+
+    @ViewById(R.id.drawer)
     ListView mDrawerList;
+
+    @ViewById(R.id.toolbar)
+    Toolbar mToolbar;
+
     SupportActionBarDrawerToggle mDrawerToggle;
     DrawerArrowDrawable drawerArrow;
 
-    Toolbar mToolbar;
+    String[] drawerLabels = {
+            "Featured",
+            "Favorites",
+            "Nearby",
+            "Search",
+            "Profile",
+            "Preferences"
+    };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(getLayoutResource());
+    @AfterViews
+    void init() {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.drawer);
 
         drawerArrow = new DrawerArrowDrawable(this) {
             @Override
@@ -73,39 +88,12 @@ public abstract class BaseActivity extends ActionBarActivity {
                 invalidateOptionsMenu();
             }
         };
+
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-
-        String[] values = new String[]{
-                "Stop Animation (Back icon)",
-                "Stop Animation (Home icon)",
-                "Start Animation",
-        };
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, values);
+        DrawerAdapter adapter = new DrawerAdapter(this, drawerLabels);
         mDrawerList.setAdapter(adapter);
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                switch (position) {
-                    case 0:
-                        mDrawerToggle.setAnimateEnabled(false);
-                        drawerArrow.setProgress(1f);
-                        break;
-                    case 1:
-                        mDrawerToggle.setAnimateEnabled(false);
-                        drawerArrow.setProgress(0f);
-                        break;
-                    case 2:
-                        mDrawerToggle.setAnimateEnabled(true);
-                        mDrawerToggle.syncState();
-                        break;
-                }
-
-            }
-        });
     }
 
     @Override
