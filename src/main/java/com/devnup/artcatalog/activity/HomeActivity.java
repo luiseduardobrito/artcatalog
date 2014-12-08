@@ -19,6 +19,7 @@ package com.devnup.artcatalog.activity;
 import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
@@ -63,11 +64,10 @@ public class HomeActivity extends BaseActivity {
 
     boolean loading = false;
 
-    @Override
     @AfterViews
     void init() {
-        super.init();
-        performQuery(QUERY);
+        initDrawer();
+        performQuery(QUERY, true);
     }
 
     @Override
@@ -84,49 +84,66 @@ public class HomeActivity extends BaseActivity {
 
     @Background
     void performQuery(String mql) {
-        loading = true;
-        notifyResult(rest.readUsingMQL(mql, true));
+        performQuery(mql, false);
+    }
+
+    @Background
+    void performQuery(String mql, Boolean fromStart) {
+        if (!loading) {
+            loading = true;
+            notifyResult(rest.readUsingMQL(mql, !fromStart));
+        }
     }
 
     @UiThread
     void notifyResult(MQLReadResponse response) {
 
-        loading = false;
-        boolean first = false;
+        if (loading) {
+            loading = false;
+            boolean first = false;
 
-        if (cardList.size() < 1) {
-            first = true;
-        }
-
-        Toast.makeText(this, String.valueOf(response.getResult().size()).concat(" artist(s) found."), Toast.LENGTH_SHORT).show();
-
-        for (VisualArtistModel artist : response.getResult()) {
-            FeaturedCardView card = FeaturedCardView_.build(this);
-            card.setTitle(artist.getName());
-
-            if (artist.getImage() != null && artist.getImage().size() > 0) {
-                String image_id = artist.getImage().get(0).getId();
-                card.setImageUrl("https://usercontent.googleapis.com/freebase/v1/image" + image_id + "?maxwidth=225&maxheight=225&mode=fillcropmid");
+            if (cardList.size() < 1) {
+                first = true;
             }
-            cardList.add(card);
-        }
 
-        if (first) {
-            mCardListView.setAdapter(new CardListAdapter(this, cardList));
-            mCardListView.setEndlessScrollListener(new CardListView.EndlessScrollListener() {
+            Toast.makeText(this, String.valueOf(response.getResult().size()).concat(" artist(s) found."), Toast.LENGTH_SHORT).show();
 
-                @Override
-                public void onLoadMore(int page, int totalItemsCount) {
-                    if (!loading) {
-                        loading = true;
-                        Toast.makeText(HomeActivity.this, "Loading more...", Toast.LENGTH_SHORT).show();
-                        performQuery(QUERY);
-                    }
+            for (VisualArtistModel artist : response.getResult()) {
+                FeaturedCardView card = FeaturedCardView_.build(this);
+                card.setTitle(artist.getName());
+
+                if (artist.getImage() != null && artist.getImage().size() > 0) {
+
+                    final VisualArtistModel fArtist = artist;
+
+                    String image_id = artist.getImage().get(0).getId();
+                    card.setImageUrl("https://usercontent.googleapis.com/freebase/v1/image" + image_id + "?maxwidth=225&maxheight=225&mode=fillcropmid");
+                    card.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ArtistActivity_.intent(HomeActivity.this).artist(fArtist).start();
+                        }
+                    });
                 }
-            });
+                cardList.add(card);
+            }
 
-        } else if (mCardListView.getAdapter() instanceof CardListAdapter) {
-            ((CardListAdapter) mCardListView.getAdapter()).setCardList(cardList);
+            if (first) {
+                mCardListView.setAdapter(new CardListAdapter(this, cardList));
+                mCardListView.setEndlessScrollListener(new CardListView.EndlessScrollListener() {
+
+                    @Override
+                    public void onLoadMore(int page, int totalItemsCount) {
+                        if (!loading) {
+                            Toast.makeText(HomeActivity.this, "Loading more...", Toast.LENGTH_SHORT).show();
+                            performQuery(QUERY);
+                        }
+                    }
+                });
+
+            } else if (mCardListView.getAdapter() instanceof CardListAdapter) {
+                ((CardListAdapter) mCardListView.getAdapter()).setCardList(cardList);
+            }
         }
     }
 }

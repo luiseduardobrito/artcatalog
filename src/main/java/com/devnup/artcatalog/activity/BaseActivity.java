@@ -23,7 +23,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.devnup.artcatalog.R;
@@ -60,7 +59,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     };
 
     @AfterViews
-    void init() {
+    void initDrawer() {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 

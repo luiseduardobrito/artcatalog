@@ -12,5 +12,6 @@
     <string name="hello_world">Hello!</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="noboringactionbar_title">Not boring title</string>
 
 </resources>

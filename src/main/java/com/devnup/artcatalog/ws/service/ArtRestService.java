@@ -19,18 +19,9 @@ public class ArtRestService {
     public String cacheCursor;
 
     public MQLReadResponse readUsingMQL(String query) {
-        return rest.readUsingMQL(query);
-    }
 
-    public MQLReadResponse readUsingMQL(String query, String cursor) {
-
-        MQLReadResponse response;
-
-        if (cursor == null || !cursor.isEmpty()) {
-            response = rest.readUsingMQL(query, "");
-        } else {
-            response = rest.readUsingMQL(query, cursor);
-        }
+        // Perform API query to check response cursor
+        MQLReadResponse response = rest.readUsingMQL(query);
 
         // Update cache cursor
         cacheCursor = (response != null ? response.getCursor() : null);
@@ -40,9 +31,18 @@ public class ArtRestService {
     }
 
     public MQLReadResponse readUsingMQL(String query, Boolean loadMore) {
-        if (!loadMore) {
+
+        if (!loadMore || cacheCursor == null || cacheCursor.isEmpty()) {
             return readUsingMQL(query);
         }
-        return readUsingMQL(query, cacheCursor);
+
+        // Perform API query to check response cursor
+        MQLReadResponse response = rest.readUsingMQL(query, cacheCursor);
+
+        // Update cache cursor
+        cacheCursor = (response != null ? response.getCursor() : null);
+
+        // Return query response
+        return response;
     }
 }

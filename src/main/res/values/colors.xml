@@ -39,4 +39,7 @@
     <color name="gradient_start">#50000000</color>
     <color name="gradient_light_start">#30000000</color>
 
+    <!--<color name="main">#63C3FF</color>-->
+    <color name="actionbar_title_color">@android:color/white</color>
+
 </resources>
