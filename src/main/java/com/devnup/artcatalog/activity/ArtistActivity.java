@@ -14,7 +14,7 @@ import com.devnup.artcatalog.R;
 import com.devnup.artcatalog.drawer.DrawerItem;
 import com.devnup.artcatalog.drawer.DrawerItem_;
 import com.devnup.artcatalog.view.AlphaForegroundColorSpan;
-import com.devnup.artcatalog.view.KenBurnsView;
+import com.devnup.artcatalog.view.ShowcaseImageView;
 import com.devnup.artcatalog.ws.model.ImageModel;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
 
@@ -37,7 +37,7 @@ public class ArtistActivity extends BaseActivity {
     VisualArtistModel artist;
 
     @ViewById(R.id.header_picture)
-    KenBurnsView mHeaderPicture;
+    ShowcaseImageView mHeaderPicture;
 
     @ViewById(R.id.info_list)
     ListView mListView;
@@ -65,7 +65,7 @@ public class ArtistActivity extends BaseActivity {
         int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
         mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
 
-        mHeaderPicture.setResourceIds(R.drawable.picture0, R.drawable.picture1);
+        // mHeaderPicture.setResourceIds(R.drawable.picture0, R.drawable.picture1);
 
         int mActionBarTitleColor = getResources().getColor(R.color.actionbar_title_color);
 
@@ -104,7 +104,7 @@ public class ArtistActivity extends BaseActivity {
 
         infoMap.add("Art Forms: " + artFormsString.toString());
 
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 10; i++) {
             infoMap.add("Empty entry #" + String.valueOf(i));
         }
 

@@ -14,20 +14,20 @@ import android.widget.ImageView;
 import com.devnup.artcatalog.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 /**
  * Created by luiseduardobrito on 12/8/14.
  */
-public class KenBurnsView extends FrameLayout {
+public class ShowcaseImageView extends FrameLayout {
 
-    private static final String TAG = "KenBurnsView";
+    private static final String TAG = ShowcaseImageView.class.getSimpleName();
 
     private final Handler mHandler;
-    private int[] mResourceIds;
-    private ImageView[] mImageViews;
-    private int mActiveImageIndex = -1;
+    List<ImageView> mImageViews;
+    private int mActiveImageIndex = 0;
 
     private final Random random = new Random();
     private int mSwapMs = 10000;
@@ -44,38 +44,61 @@ public class KenBurnsView extends FrameLayout {
         }
     };
 
-    public KenBurnsView(Context context) {
+    public ShowcaseImageView(Context context) {
         this(context, null);
+
+        setClickable(true);
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mImageViews.size() > 1) {
+                    swapImage();
+                }
+            }
+        });
     }
 
-    public KenBurnsView(Context context, AttributeSet attrs) {
+    public ShowcaseImageView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+
+        setClickable(true);
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mImageViews.size() > 1) {
+                    swapImage();
+                }
+            }
+        });
     }
 
-    public KenBurnsView(Context context, AttributeSet attrs, int defStyle) {
+    public ShowcaseImageView(Context context, AttributeSet attrs, int defStyle) {
+
         super(context, attrs, defStyle);
         mHandler = new Handler();
-    }
 
-    public void setResourceIds(int... resourceIds) {
-        mResourceIds = resourceIds;
+        setClickable(true);
+        setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mImageViews.size() > 1) {
+                    swapImage();
+                }
+            }
+        });
     }
 
     private void swapImage() {
+
         Log.d(TAG, "swapImage active=" + mActiveImageIndex);
-        if (mActiveImageIndex == -1) {
-            mActiveImageIndex = 1;
-            animate(mImageViews[mActiveImageIndex]);
-            return;
-        }
 
         int inactiveIndex = mActiveImageIndex;
-        mActiveImageIndex = (1 + mActiveImageIndex) % mImageViews.length;
+        mActiveImageIndex = (1 + mActiveImageIndex) % mImageViews.size();
         Log.d(TAG, "new active=" + mActiveImageIndex);
 
-        final ImageView activeImageView = mImageViews[mActiveImageIndex];
+        final ImageView activeImageView = mImageViews.get(mActiveImageIndex);
         activeImageView.setAlpha(0.0f);
-        ImageView inactiveImageView = mImageViews[inactiveIndex];
+        ImageView inactiveImageView = mImageViews.get(inactiveIndex);
 
         animate(activeImageView);
 
@@ -85,6 +108,7 @@ public class KenBurnsView extends FrameLayout {
                 ObjectAnimator.ofFloat(inactiveImageView, "alpha", 1.0f, 0.0f),
                 ObjectAnimator.ofFloat(activeImageView, "alpha", 0.0f, 1.0f)
         );
+
         animatorSet.start();
     }
 
@@ -113,13 +137,14 @@ public class KenBurnsView extends FrameLayout {
         float fromTranslationY = pickTranslation(view.getHeight(), fromScale);
         float toTranslationX = pickTranslation(view.getWidth(), toScale);
         float toTranslationY = pickTranslation(view.getHeight(), toScale);
+        view.setVisibility(View.VISIBLE);
         start(view, this.mSwapMs, fromScale, toScale, fromTranslationX, fromTranslationY, toTranslationX, toTranslationY);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        startKenBurnsAnimation();
+        startAnimation();
     }
 
     @Override
@@ -128,26 +153,36 @@ public class KenBurnsView extends FrameLayout {
         mHandler.removeCallbacks(mSwapImageRunnable);
     }
 
-    private void startKenBurnsAnimation() {
+    private void startAnimation() {
         mHandler.post(mSwapImageRunnable);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        View view = inflate(getContext(), R.layout.view_kenburns, this);
-
-        mImageViews = new ImageView[2];
-        mImageViews[0] = (ImageView) view.findViewById(R.id.image0);
-        mImageViews[1] = (ImageView) view.findViewById(R.id.image1);
+        View view = inflate(getContext(), R.layout.view_showcase, this);
+        mImageViews = new ArrayList<ImageView>();
     }
 
     public void fillImageViews(List<String> images) {
-        for (int i = 0; i < Math.min(images.size(), mImageViews.length); i++) {
+
+        this.removeAllViews();
+        mImageViews = new ArrayList<ImageView>();
+
+        for (String image : images) {
+
+            ImageView iv = new ImageView(getContext());
+            iv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            iv.setVisibility(View.INVISIBLE);
+            mImageViews.add(iv);
+
             Picasso
                     .with(getContext())
-                    .load(images.get(i))
-                    .into(mImageViews[i]);
+                    .load(image)
+                    .into(iv);
+
+            this.addView(iv);
         }
     }
 }
