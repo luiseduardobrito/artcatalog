@@ -16,7 +16,9 @@
 
 package com.devnup.artcatalog.activity;
 
+import android.app.SearchManager;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -36,12 +38,15 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@OptionsMenu(R.menu.main)
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseDrawerActivity {
 
@@ -53,6 +58,9 @@ public class HomeActivity extends BaseDrawerActivity {
     @ViewById(R.id.card_list)
     CardListView mCardListView;
 
+    @SystemService
+    SearchManager searchManager;
+
     boolean loading = false;
 
     @AfterViews
@@ -62,8 +70,13 @@ public class HomeActivity extends BaseDrawerActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = new MenuInflater(this);
-        inflater.inflate(R.menu.main, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
         return true;
     }
 

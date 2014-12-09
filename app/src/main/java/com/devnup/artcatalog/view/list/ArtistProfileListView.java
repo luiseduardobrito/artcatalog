@@ -122,19 +122,19 @@ public class ArtistProfileListView extends ListView {
         List<FreebaseReferenceModel> artworks = artist.getArtworks();
         List<FreebaseReferenceModel> periods = artist.getPeriods();
 
-        // Fill Art Form cards
-        if (section == 1 && artForms != null && artForms.size() > position) {
-
-            containedCardView.setTitle(artForms.get(position).getName());
-            containedCardView.setImageUrl(FreebaseUtil.getImageURL(artForms.get(position).getMid()));
-
-        }
-
         // Fill Artwork cards
-        else if (section == 2 && artworks != null && artworks.size() > position) {
+        if (section == 1 && artworks != null && artworks.size() > position) {
 
             containedCardView.setTitle(artworks.get(position).getName());
             containedCardView.setImageUrl(FreebaseUtil.getImageURL(artworks.get(position).getMid()));
+
+        }
+
+        // Fill Art Form cards
+        else if (section == 2 && artForms != null && artForms.size() > position) {
+
+            containedCardView.setTitle(artForms.get(position).getName());
+            containedCardView.setImageUrl(FreebaseUtil.getImageURL(artForms.get(position).getMid()));
 
         }
 
