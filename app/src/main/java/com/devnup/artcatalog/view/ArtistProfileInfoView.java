@@ -88,7 +88,7 @@ public class ArtistProfileInfoView extends FrameLayout {
                 placeStr.append(placeStr.length() > 0 ? ", " + n : n);
             }
 
-            mBirthView.setText(placeStr.toString());
+            mNationalityView.setText(placeStr.toString());
         }
     }
 }

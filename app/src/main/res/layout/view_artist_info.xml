@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="164dp">
+    android:layout_height="180dp">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -11,6 +11,7 @@
         android:layout_gravity="bottom"
         android:paddingLeft="152dp"
         android:paddingRight="16dp"
+        android:gravity="top"
         android:paddingTop="16dp"
         android:orientation="vertical">
 
@@ -18,34 +19,32 @@
             android:id="@+id/profile_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:maxLines="2"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"
-            android:gravity="top" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/profile_birth"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             style="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/black"
-            android:gravity="top" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/profile_nationality"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             style="@style/TextAppearance.AppCompat.Small"
-            android:textColor="@color/black"
-            android:gravity="top" />
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
 
     <ImageView
         android:id="@+id/profile_picture"
-        android:layout_width="120dp"
+        android:layout_width="110dp"
         android:layout_height="fill_parent"
         android:layout_gravity="fill_vertical|left"
         android:layout_margin="16dp" />
