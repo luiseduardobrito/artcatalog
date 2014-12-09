@@ -23,10 +23,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
-import com.devnup.artcatalog.view.card.CardListAdapter;
-import com.devnup.artcatalog.view.card.CardListView;
 import com.devnup.artcatalog.view.card.FeaturedCardView;
 import com.devnup.artcatalog.view.card.FeaturedCardView_;
+import com.devnup.artcatalog.view.list.CardListView;
+import com.devnup.artcatalog.view.list.adapter.CardListAdapter;
+import com.devnup.artcatalog.ws.FreebaseUtil;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
 import com.devnup.artcatalog.ws.response.MQLReadResponse;
 import com.devnup.artcatalog.ws.service.ArtRestService;
@@ -46,17 +47,6 @@ public class HomeActivity extends BaseDrawerActivity {
 
     List<CardView> cardList = new ArrayList<CardView>();
 
-    private static final String QUERY = "[{" +
-            "\"type\": \"/visual_art/visual_artist\",   " +
-            "\"id\": null," +
-            "\"name\": null," +
-            "\"/visual_art/visual_artist/art_forms\": []," +
-            "\"limit\": 20," +
-            "\"/common/topic/image\" : [{" +
-            "  \"id\" : null," +
-            "  \"mid\": null" +
-            "}]}]";
-
     @Bean
     ArtRestService rest;
 
@@ -67,7 +57,7 @@ public class HomeActivity extends BaseDrawerActivity {
 
     @AfterViews
     void init() {
-        performQuery(QUERY, true);
+        performQuery(FreebaseUtil.getQuery(), true);
     }
 
     @Override
@@ -112,7 +102,7 @@ public class HomeActivity extends BaseDrawerActivity {
                     final VisualArtistModel fArtist = artist;
 
                     String image_id = artist.getImage().get(0).getId();
-                    card.setImageUrl("https://usercontent.googleapis.com/freebase/v1/image" + image_id + "?maxwidth=225&maxheight=225&mode=fillcropmid");
+                    card.setImageUrl(FreebaseUtil.getImageURL(image_id));
                     card.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -131,7 +121,7 @@ public class HomeActivity extends BaseDrawerActivity {
                     public void onLoadMore(int page, int totalItemsCount) {
                         if (!loading) {
                             Toast.makeText(HomeActivity.this, "Loading more...", Toast.LENGTH_SHORT).show();
-                            performQuery(QUERY);
+                            performQuery(FreebaseUtil.getQuery());
                         }
                     }
                 });

@@ -1,4 +1,4 @@
-package com.devnup.artcatalog.view.card;
+package com.devnup.artcatalog.view.list;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -13,11 +13,6 @@ import org.androidannotations.annotations.EView;
  */
 @EView
 public class CardListView extends ListView {
-
-    int currentScrollState;
-
-    Integer currentVisibleItemCount;
-    Integer currentFirstVisibleItem;
 
     EndlessScrollListener endlessScrollListener;
 
@@ -72,10 +67,10 @@ public class CardListView extends ListView {
         }
 
         // This happens many times a second during a scroll, so be wary of the code
-// you place here.
-// We are given a few useful parameters to help us work out if we need to
-// load some more data,
-// but first we check if we are waiting for the previous load to finish.
+        // you place here.
+        // We are given a few useful parameters to help us work out if we need to
+        // load some more data,
+        // but first we check if we are waiting for the previous load to finish.
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem,
                              int visibleItemCount, int totalItemCount) {

@@ -2,19 +2,15 @@ package com.devnup.artcatalog.activity;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 
 import com.devnup.artcatalog.R;
-import com.devnup.artcatalog.view.card.CardContainerView;
-import com.devnup.artcatalog.view.card.CardContainerView_;
 import com.devnup.artcatalog.view.image.ShowcaseImageView;
-import com.devnup.artcatalog.ws.model.ImageModel;
+import com.devnup.artcatalog.view.list.ArtistProfileListView;
+import com.devnup.artcatalog.ws.FreebaseUtil;
+import com.devnup.artcatalog.ws.model.FreebaseReferenceModel;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
 
 import org.androidannotations.annotations.AfterViews;
@@ -39,7 +35,7 @@ public class ArtistActivity extends BaseActivity {
     ShowcaseImageView mHeaderPicture;
 
     @ViewById(R.id.info_list)
-    ListView mListView;
+    ArtistProfileListView mArtistProfileListView;
 
     @ViewById(R.id.header)
     View mHeader;
@@ -68,78 +64,28 @@ public class ArtistActivity extends BaseActivity {
 
         // Prepare images list
         List<String> images = new ArrayList<String>();
-        for (ImageModel model : artist.getImage()) {
-            images.add("https://usercontent.googleapis.com/freebase/v1/image" + model.getId() + "?maxwidth=225&maxheight=225&mode=fillcropmid");
+        for (FreebaseReferenceModel model : artist.getImage()) {
+            images.add(FreebaseUtil.getImageURL(model.getId()));
+        }
+
+        // If there's many, remove first for profile
+        if (images.size() > 1) {
+            images.remove(0);
         }
 
         // Populate images
         mHeaderPicture.fillImageViews(images);
+
+        // Prepare artist profile
+        mArtistProfileListView.setArtist(artist);
     }
 
     private void setupListView() {
 
-        final ArrayList<String> infoMap = new ArrayList<String>();
+        mPlaceHolderView = getLayoutInflater().inflate(R.layout.view_header_placeholder, mArtistProfileListView, false);
+        mArtistProfileListView.addHeaderView(mPlaceHolderView);
 
-        infoMap.add("Freebase ID: " + artist.getId());
-        infoMap.add("Name: " + artist.getType());
-
-        StringBuilder artFormsString = new StringBuilder();
-
-        for (String form : artist.getArtForms()) {
-            artFormsString.append(form);
-        }
-
-        infoMap.add("Art Forms: " + artFormsString.toString());
-
-        for (int i = 0; i < 10; i++) {
-            infoMap.add("Empty entry #" + String.valueOf(i));
-        }
-
-        mPlaceHolderView = getLayoutInflater().inflate(R.layout.view_header_placeholder, mListView, false);
-        mListView.addHeaderView(mPlaceHolderView);
-
-        // Populate List View
-        mListView.setAdapter(new BaseAdapter() {
-
-            @Override
-            public int getCount() {
-                return 5;
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return position;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-
-                CardContainerView view;
-
-                if (convertView != null && convertView instanceof CardContainerView) {
-                    view = (CardContainerView) convertView;
-                } else {
-                    view = CardContainerView_.build(ArtistActivity.this);
-                }
-
-                List<CardView> cards = new ArrayList<CardView>();
-
-                for (int i = 0; i < 3; i++) {
-                    cards.add(new CardView(ArtistActivity.this));
-                }
-
-                view.setTitle("Featured Artworks");
-                view.setCardList(cards);
-                return view;
-            }
-        });
-
-        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        mArtistProfileListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 return;
@@ -168,13 +114,13 @@ public class ArtistActivity extends BaseActivity {
 
     public int getScrollY() {
 
-        View c = mListView.getChildAt(0);
+        View c = mArtistProfileListView.getChildAt(0);
 
         if (c == null) {
             return 0;
         }
 
-        int firstVisiblePosition = mListView.getFirstVisiblePosition();
+        int firstVisiblePosition = mArtistProfileListView.getFirstVisiblePosition();
         int top = c.getTop();
 
         int headerHeight = 0;

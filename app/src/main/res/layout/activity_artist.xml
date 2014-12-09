@@ -6,12 +6,6 @@
     android:fitsSystemWindows="true"
     android:background="@color/white">
 
-    <ListView
-        android:id="@+id/info_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/windowBackgroundColor" />
-
     <FrameLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -24,6 +18,12 @@
             android:layout_height="match_parent" />
 
     </FrameLayout>
+
+    <com.devnup.artcatalog.view.list.ArtistProfileListView_
+        android:id="@+id/info_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black" />
 
     <include layout="@layout/toolbar" />
 

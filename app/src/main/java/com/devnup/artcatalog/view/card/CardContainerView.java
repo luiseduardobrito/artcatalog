@@ -46,12 +46,12 @@ public class CardContainerView extends LinearLayout {
         this.title.setText(title);
     }
 
-    public void setCardList(List<CardView> cards) {
+    public void setCardList(List<ContainedCardView> cards) {
 
         container.removeAllViews();
         int count = 0;
 
-        for (CardView card : cards) {
+        for (ContainedCardView card : cards) {
 
             LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1f);
 

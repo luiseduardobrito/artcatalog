@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="artist_profile_sections">
+        <item>Art Forms</item>
+        <item>Featured Artworks</item>
+        <item>Associated Periods or Movements</item>
+    </string-array>
+</resources>

@@ -25,6 +25,7 @@ proguard/
 # Log Files
 *.log
 
+# IML files
 *.iml
 
 ## Directory-based project format:

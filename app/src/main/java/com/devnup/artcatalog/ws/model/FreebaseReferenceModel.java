@@ -1,12 +1,14 @@
 package com.devnup.artcatalog.ws.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author luiseduardobrito
  * @since 12/8/14.
  */
-public class ImageModel extends BaseModel {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class FreebaseReferenceModel extends BaseModel {
 
     @JsonProperty("id")
     String id;
@@ -14,7 +16,10 @@ public class ImageModel extends BaseModel {
     @JsonProperty("mid")
     String mid;
 
-    ImageModel() {
+    @JsonProperty("name")
+    String name;
+
+    FreebaseReferenceModel() {
     }
 
     public String getId() {
@@ -31,5 +36,13 @@ public class ImageModel extends BaseModel {
 
     public void setMid(String mid) {
         this.mid = mid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
