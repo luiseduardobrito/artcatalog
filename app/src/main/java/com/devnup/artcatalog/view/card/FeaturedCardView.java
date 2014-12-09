@@ -52,8 +52,9 @@ public class FeaturedCardView extends CardView {
         Picasso
                 .with(getContext())
                 .load(url)
+                .fit()
+                .centerCrop()
                 .transform(new RoundedTransformation(RADIUS, 0))
-                .centerInside()
                 .into(mImage);
     }
 
