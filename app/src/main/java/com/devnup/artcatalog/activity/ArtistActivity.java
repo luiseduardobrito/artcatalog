@@ -2,7 +2,7 @@ package com.devnup.artcatalog.activity;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
-import android.text.SpannableString;
+import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.devnup.artcatalog.R;
-import com.devnup.artcatalog.drawer.DrawerItemView;
-import com.devnup.artcatalog.drawer.DrawerItemView_;
-import com.devnup.artcatalog.view.AlphaForegroundColorSpan;
+import com.devnup.artcatalog.view.card.CardContainerView;
+import com.devnup.artcatalog.view.card.CardContainerView_;
 import com.devnup.artcatalog.view.image.ShowcaseImageView;
 import com.devnup.artcatalog.ws.model.ImageModel;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
@@ -52,9 +51,6 @@ public class ArtistActivity extends BaseActivity {
 
     private View mPlaceHolderView;
 
-    private AlphaForegroundColorSpan mAlphaForegroundColorSpan;
-    private SpannableString mSpannableString;
-
     private TypedValue mTypedValue = new TypedValue();
 
     @AfterViews
@@ -62,13 +58,6 @@ public class ArtistActivity extends BaseActivity {
 
         int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
         mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
-
-        // mHeaderPicture.setResourceIds(R.drawable.picture0, R.drawable.picture1);
-
-        int mActionBarTitleColor = getResources().getColor(R.color.actionbar_title_color);
-
-        mSpannableString = new SpannableString(getString(R.string.noboringactionbar_title));
-        mAlphaForegroundColorSpan = new AlphaForegroundColorSpan(mActionBarTitleColor);
 
         setupActionBar();
         setupListView();
@@ -108,16 +97,18 @@ public class ArtistActivity extends BaseActivity {
 
         mPlaceHolderView = getLayoutInflater().inflate(R.layout.view_header_placeholder, mListView, false);
         mListView.addHeaderView(mPlaceHolderView);
+
+        // Populate List View
         mListView.setAdapter(new BaseAdapter() {
 
             @Override
             public int getCount() {
-                return infoMap.size();
+                return 5;
             }
 
             @Override
             public Object getItem(int position) {
-                return infoMap.get(position);
+                return position;
             }
 
             @Override
@@ -128,15 +119,22 @@ public class ArtistActivity extends BaseActivity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
 
-                DrawerItemView view;
+                CardContainerView view;
 
-                if (convertView != null && convertView instanceof DrawerItemView) {
-                    view = (DrawerItemView) convertView;
+                if (convertView != null && convertView instanceof CardContainerView) {
+                    view = (CardContainerView) convertView;
                 } else {
-                    view = DrawerItemView_.build(ArtistActivity.this);
+                    view = CardContainerView_.build(ArtistActivity.this);
                 }
 
-                view.setLabel(infoMap.get(position));
+                List<CardView> cards = new ArrayList<CardView>();
+
+                for (int i = 0; i < 3; i++) {
+                    cards.add(new CardView(ArtistActivity.this));
+                }
+
+                view.setTitle("Featured Artworks");
+                view.setCardList(cards);
                 return view;
             }
         });
@@ -144,26 +142,51 @@ public class ArtistActivity extends BaseActivity {
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
+                return;
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int scrollY = getScrollY();
+
+                int scrollY = getScrollY(); //for verticalScrollView
+
                 //sticky actionbar
                 mHeader.setTranslationY(Math.max(-scrollY, mMinHeaderTranslation));
+
                 //header_logo --> actionbar icon
                 float ratio = clamp(mHeader.getTranslationY() / mMinHeaderTranslation, 0.0f, 1.0f);
+
                 // interpolate(mHeaderLogo, getActionBarIconView(), mSmoothInterpolator.getInterpolation(ratio));
                 //actionbar title alpha
                 //getActionBarTitleView().setAlpha(clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F));
                 //---------------------------------
                 //better way thanks to @cyrilmottier
-                setTitleAlpha(clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F));
+                setToolbarAlpha(clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F));
             }
         });
     }
 
-    private void setTitleAlpha(float alpha) {
+    public int getScrollY() {
+
+        View c = mListView.getChildAt(0);
+
+        if (c == null) {
+            return 0;
+        }
+
+        int firstVisiblePosition = mListView.getFirstVisiblePosition();
+        int top = c.getTop();
+
+        int headerHeight = 0;
+
+        if (firstVisiblePosition >= 1) {
+            headerHeight = mPlaceHolderView.getHeight();
+        }
+
+        return -top + firstVisiblePosition * c.getHeight() + headerHeight;
+    }
+
+    private void setToolbarAlpha(float alpha) {
 
         //mAlphaForegroundColorSpan.setAlpha(1 - alpha);
         //mSpannableString.setSpan(mAlphaForegroundColorSpan, 0, mSpannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -181,30 +204,13 @@ public class ArtistActivity extends BaseActivity {
         return Math.max(min, Math.min(value, max));
     }
 
-    public int getScrollY() {
-        View c = mListView.getChildAt(0);
-        if (c == null) {
-            return 0;
-        }
-
-        int firstVisiblePosition = mListView.getFirstVisiblePosition();
-        int top = c.getTop();
-
-        int headerHeight = 0;
-        if (firstVisiblePosition >= 1) {
-            headerHeight = mPlaceHolderView.getHeight();
-        }
-
-        return -top + firstVisiblePosition * c.getHeight() + headerHeight;
-    }
-
     private void setupActionBar() {
 
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
-            actionBar.setIcon(R.drawable.ic_transparent);
             mActionBarBackgroundDrawable = mToolbar.getBackground();
+            setToolbarAlpha(0f);
         }
 
         //getActionBarTitleView().setAlpha(0f);

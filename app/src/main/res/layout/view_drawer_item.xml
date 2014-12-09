@@ -11,7 +11,7 @@
         android:maxWidth="48dp"
         android:scaleType="centerInside"
         android:layout_height="fill_parent"
-        android:layout_margin="16dp" />
+        android:layout_margin="18dp" />
 
     <TextView
         android:id="@+id/label"

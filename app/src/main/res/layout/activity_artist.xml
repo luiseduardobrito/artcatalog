@@ -6,12 +6,11 @@
     android:fitsSystemWindows="true"
     android:background="@color/white">
 
-
     <ListView
         android:id="@+id/info_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white" />
+        android:background="@color/windowBackgroundColor" />
 
     <FrameLayout
         android:id="@+id/header"

@@ -7,8 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.devnup.artcatalog.R;
+import com.devnup.artcatalog.view.image.RoundedTransformation;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
@@ -19,6 +21,8 @@ import org.androidannotations.annotations.ViewById;
 @EViewGroup(R.layout.view_card)
 public class FeaturedCardView extends CardView {
 
+    private static final int RADIUS = 12;
+
     @ViewById(R.id.title)
     TextView mTitle;
 
@@ -27,14 +31,17 @@ public class FeaturedCardView extends CardView {
 
     public FeaturedCardView(Context context) {
         super(context);
+        this.setRadius(RADIUS);
     }
 
     public FeaturedCardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.setRadius(RADIUS);
     }
 
     public FeaturedCardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.setRadius(RADIUS);
     }
 
     public void setTitle(String title) {
@@ -45,6 +52,8 @@ public class FeaturedCardView extends CardView {
         Picasso
                 .with(getContext())
                 .load(url)
+                .transform(new RoundedTransformation(RADIUS, 0))
+                .centerInside()
                 .into(mImage);
     }
 

@@ -27,13 +27,13 @@
     <color name="white_50">#FAFAFA80</color>
     <color name="white_75">#FAFAFABF</color>
 
-    <color name="colorPrimary">@color/material_blue_grey_800</color>
-    <color name="colorPrimaryDark">@color/material_blue_grey_900</color>
+    <color name="colorPrimary">#ab300a</color>
+    <color name="colorPrimaryDark">#852508</color>
 
-    <color name="colorSecondary">@color/material_deep_teal_200</color>
-    <color name="colorSecondaryDark">@color/material_deep_teal_500</color>
+    <color name="colorSecondary">#FDD835</color>
+    <color name="colorSecondaryDark">#FDD835</color>
 
-    <color name="windowBackgroundColor">#333333</color>
+    <color name="windowBackgroundColor">#e6e6e6</color>
     <color name="black_translucent">#80000000</color>
 
     <color name="gradient_start">#50000000</color>

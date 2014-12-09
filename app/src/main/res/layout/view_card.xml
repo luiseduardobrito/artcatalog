@@ -21,8 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:textColor="@color/white"
-            android:padding="12dp"
             android:textSize="24sp"
+            android:padding="16dp"
             android:background="@color/black_75" />
 
     </FrameLayout>
@@ -35,6 +35,6 @@
         android:layout_margin="12dp"
         android:layout_alignParentRight="true"
         android:scaleType="centerInside"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
