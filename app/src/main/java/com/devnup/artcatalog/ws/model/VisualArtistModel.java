@@ -2,8 +2,11 @@ package com.devnup.artcatalog.ws.model;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,8 +22,11 @@ public class VisualArtistModel extends BaseModel {
     @JsonProperty("name")
     String name = null;
 
+    @JsonProperty("/people/person/date_of_birth")
+    Date birthDate = null;
+
     @JsonProperty("type")
-    String type = "\"/visual_art/visual_artist\"";
+    String type = "/visual_art/visual_artist";
 
     @JsonProperty("/common/topic/image")
     List<FreebaseReferenceModel> image = new ArrayList<>();
@@ -29,10 +35,36 @@ public class VisualArtistModel extends BaseModel {
     List<FreebaseReferenceModel> artForms = new ArrayList<>();
 
     @JsonProperty("/visual_art/visual_artist/artworks")
-    List<FreebaseReferenceModel> artworks = new ArrayList<>();
+    List<VisualArtworkModel> artworks = new ArrayList<>();
 
     @JsonProperty("/visual_art/visual_artist/associated_periods_or_movements")
     List<FreebaseReferenceModel> periods = new ArrayList<>();
+
+    @JsonProperty("/people/person/place_of_birth")
+    List<FreebaseReferenceModel> placeOfBirth = new ArrayList<>();
+
+    @JsonProperty("/people/person/nationality")
+    List<FreebaseReferenceModel> nationality = new ArrayList<>();
+
+    public static String toFreebaseQuery() {
+
+        VisualArtistModel artist = new VisualArtistModel();
+
+        artist.artForms.add(new FreebaseReferenceModel());
+        artist.artworks.add(new VisualArtworkModel());
+        artist.periods.add(new FreebaseReferenceModel());
+        artist.placeOfBirth.add(new FreebaseReferenceModel());
+        artist.nationality.add(new FreebaseReferenceModel());
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return "[" + mapper.writeValueAsString(artist) + "]";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public VisualArtistModel() {
     }
@@ -77,11 +109,11 @@ public class VisualArtistModel extends BaseModel {
         return artForms;
     }
 
-    public List<FreebaseReferenceModel> getArtworks() {
+    public List<VisualArtworkModel> getArtworks() {
         return artworks;
     }
 
-    public void setArtworks(List<FreebaseReferenceModel> artworks) {
+    public void setArtworks(List<VisualArtworkModel> artworks) {
         this.artworks = artworks;
     }
 
@@ -91,5 +123,29 @@ public class VisualArtistModel extends BaseModel {
 
     public void setPeriods(List<FreebaseReferenceModel> periods) {
         this.periods = periods;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public List<FreebaseReferenceModel> getPlaceOfBirth() {
+        return this.placeOfBirth;
+    }
+
+    public void setPlaceOfBirth(List<FreebaseReferenceModel> placeBirth) {
+        this.placeOfBirth = placeBirth;
+    }
+
+    public List<FreebaseReferenceModel> getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(List<FreebaseReferenceModel> nationality) {
+        this.nationality = nationality;
     }
 }

@@ -5,10 +5,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * @author luiseduardobrito
- * @since 12/8/14.
+ * @since 12/7/14.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FreebaseReferenceModel extends BaseModel {
+public class VisualArtworkModel extends BaseModel {
 
     @JsonProperty("id")
     String id = null;
@@ -19,7 +19,7 @@ public class FreebaseReferenceModel extends BaseModel {
     @JsonProperty("name")
     String name = null;
 
-    FreebaseReferenceModel() {
+    public VisualArtworkModel() {
     }
 
     public String getId() {
@@ -30,19 +30,19 @@ public class FreebaseReferenceModel extends BaseModel {
         this.id = id;
     }
 
-    public String getMid() {
-        return mid;
-    }
-
-    public void setMid(String mid) {
-        this.mid = mid;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMid() {
+        return mid;
+    }
+
+    public void setMid(String mid) {
+        this.mid = mid;
     }
 }

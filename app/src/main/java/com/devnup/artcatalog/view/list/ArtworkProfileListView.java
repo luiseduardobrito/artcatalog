@@ -32,22 +32,22 @@ import java.util.List;
  * @since 12/9/14.
  */
 @EView
-public class ArtistProfileListView extends ListView {
+public class ArtworkProfileListView extends ListView {
 
     @StringArrayRes(R.array.artist_profile_sections)
     String[] titles;
 
     VisualArtistModel artist;
 
-    public ArtistProfileListView(Context context) {
+    public ArtworkProfileListView(Context context) {
         super(context);
     }
 
-    public ArtistProfileListView(Context context, AttributeSet attrs) {
+    public ArtworkProfileListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ArtistProfileListView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ArtworkProfileListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -119,8 +119,8 @@ public class ArtistProfileListView extends ListView {
         containedCardView.setVisibility(View.VISIBLE);
 
         // Art Forms Section
-        List<FreebaseReferenceModel> artForms = artist.getArtForms();
         List<VisualArtworkModel> artworks = artist.getArtworks();
+        List<FreebaseReferenceModel> artForms = artist.getArtForms();
         List<FreebaseReferenceModel> periods = artist.getPeriods();
 
         // Fill Artwork cards
@@ -164,7 +164,7 @@ public class ArtistProfileListView extends ListView {
             view = ArtistProfileInfoView_.build(getContext());
         }
 
-        view.setArtist(ArtistProfileListView.this.artist);
+        view.setArtist(ArtworkProfileListView.this.artist);
         return view;
     }
 

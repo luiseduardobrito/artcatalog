@@ -4,19 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="164dp">
 
-    <TextView
-        android:id="@+id/profile_name"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="120dp"
         android:background="@color/white"
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/black"
-        android:gravity="top"
         android:layout_gravity="bottom"
         android:paddingLeft="152dp"
         android:paddingRight="16dp"
         android:paddingTop="16dp"
-        android:text="Leonardo da Vinci" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:gravity="top" />
+
+        <TextView
+            android:id="@+id/profile_birth"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/black"
+            android:gravity="top" />
+
+        <TextView
+            android:id="@+id/profile_nationality"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/black"
+            android:gravity="top" />
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/profile_picture"
