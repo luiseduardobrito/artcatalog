@@ -130,19 +130,19 @@ public class ArtistProfileListView extends ListView {
 
         }
 
-        // Fill Art Form cards
-        else if (section == 2 && artForms != null && artForms.size() > position) {
-
-            containedCardView.setTitle(artForms.get(position).getName());
-            containedCardView.setImageUrl(FreebaseUtil.getImageURL(artForms.get(position).getMid()));
-
-        }
-
         // Fill Periods cards
-        else if (section == 3 && periods != null && periods.size() > position) {
+        else if (section == 2 && periods != null && periods.size() > position) {
 
             containedCardView.setTitle(periods.get(position).getName());
             containedCardView.setImageUrl(FreebaseUtil.getImageURL(periods.get(position).getMid()));
+
+        }
+
+        // Fill Art Form cards
+        else if (section == 3 && artForms != null && artForms.size() > position) {
+
+            containedCardView.setTitle(artForms.get(position).getName());
+            containedCardView.setImageUrl(FreebaseUtil.getImageURL(artForms.get(position).getMid()));
 
         } else {
 
