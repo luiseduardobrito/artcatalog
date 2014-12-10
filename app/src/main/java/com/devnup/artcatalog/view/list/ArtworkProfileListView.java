@@ -1,6 +1,7 @@
 package com.devnup.artcatalog.view.list;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,13 +104,26 @@ public class ArtworkProfileListView extends ListView {
         }
 
         List<ContainedCardView> cards = new ArrayList<>();
+        Boolean atLeastOne = false;
 
         for (int i = 0; i < 3; i++) {
-            cards.add(getContainedCardView(position, i));
+
+            ContainedCardView card = getContainedCardView(position, i);
+
+            if(card.getVisibility() == View.VISIBLE) {
+                atLeastOne = true;
+            }
+
+            cards.add(card);
         }
 
         view.setTitle(titles[position - 1]);
         view.setCardList(cards);
+
+        if(!atLeastOne) {
+            this.setVisibility(GONE);
+        }
+
         return view;
     }
 

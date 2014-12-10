@@ -22,6 +22,9 @@ public class FreebaseReferenceModel extends BaseModel {
     @JsonProperty("name")
     String name = null;
 
+    @JsonProperty("optional")
+    Boolean optional = true;
+
     public FreebaseReferenceModel() {
     }
 
@@ -74,5 +77,13 @@ public class FreebaseReferenceModel extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getOptional() {
+        return optional;
+    }
+
+    public void setOptional(Boolean optional) {
+        this.optional = optional;
     }
 }

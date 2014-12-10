@@ -24,6 +24,9 @@ public class FreebaseLocationReferenceModel extends BaseModel {
     @JsonProperty("location")
     List<FreebaseReferenceModel> location = new ArrayList<>();
 
+    @JsonProperty("optional")
+    Boolean optional = true;
+
     public FreebaseLocationReferenceModel() {
     }
 
@@ -78,5 +81,13 @@ public class FreebaseLocationReferenceModel extends BaseModel {
 
     public void setLocation(List<FreebaseReferenceModel> location) {
         this.location = location;
+    }
+
+    public Boolean getOptional() {
+        return optional;
+    }
+
+    public void setOptional(Boolean optional) {
+        this.optional = optional;
     }
 }
