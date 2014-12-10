@@ -84,9 +84,18 @@ public class ArtworkProfileListView extends ListView {
             public View getView(int position, View convertView, ViewGroup parent) {
 
                 if (position == 0) {
+
                     return getArtworkProfileInfoView(convertView);
+
                 } else {
-                    return getCardContainer(position, convertView);
+
+                    CardContainerView containerView = getCardContainer(position, convertView);
+
+                    if(containerView == null) {
+                        return new View(getContext());
+                    }
+
+                    return containerView;
                 }
 
             }
@@ -121,7 +130,7 @@ public class ArtworkProfileListView extends ListView {
         view.setCardList(cards);
 
         if(!atLeastOne) {
-            view.setVisibility(GONE);
+            return null;
         }
 
         return view;

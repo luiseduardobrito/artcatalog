@@ -83,11 +83,19 @@ public class ArtistProfileListView extends ListView {
             public View getView(int position, View convertView, ViewGroup parent) {
 
                 if (position == 0) {
-                    return getArtistProfileInfoView(convertView);
-                } else {
-                    return getCardContainer(position, convertView);
-                }
 
+                    return getArtistProfileInfoView(convertView);
+
+                } else {
+
+                    CardContainerView containerView = getCardContainer(position, convertView);
+
+                    if (containerView == null) {
+                        return new View(getContext());
+                    }
+
+                    return containerView;
+                }
             }
         });
     }
@@ -103,13 +111,26 @@ public class ArtistProfileListView extends ListView {
         }
 
         List<ContainedCardView> cards = new ArrayList<>();
+        Boolean atLeastOne = false;
 
         for (int i = 0; i < 3; i++) {
-            cards.add(getContainedCardView(position, i));
+
+            ContainedCardView card = getContainedCardView(position, i);
+
+            if(card.getVisibility() == View.VISIBLE) {
+                atLeastOne = true;
+            }
+
+            cards.add(card);
         }
 
         view.setTitle(titles[position - 1]);
         view.setCardList(cards);
+
+        if(!atLeastOne) {
+            return null;
+        }
+
         return view;
     }
 
