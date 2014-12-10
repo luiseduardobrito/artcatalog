@@ -17,7 +17,6 @@ import com.devnup.artcatalog.view.card.ContainedCardView;
 import com.devnup.artcatalog.view.card.ContainedCardView_;
 import com.devnup.artcatalog.ws.FreebaseUtil;
 import com.devnup.artcatalog.ws.model.FreebaseReferenceModel;
-import com.devnup.artcatalog.ws.model.FreebaseTypedReferenceModel;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
 
 import org.androidannotations.annotations.AfterViews;

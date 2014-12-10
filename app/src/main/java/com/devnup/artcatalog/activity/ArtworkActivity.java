@@ -63,8 +63,15 @@ public class ArtworkActivity extends BaseActivity {
     @AfterViews
     void initViews() {
 
+        // TODO: loading
         setTitle("Loading...");
-        setToolbarAlpha(0f);
+
+        // Prepare header height and translation
+        int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
+        mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
+
+        // Setup components
+        setupActionBar();
 
         if (artwork == null && mid != null) {
 
@@ -72,12 +79,7 @@ public class ArtworkActivity extends BaseActivity {
 
         } else {
 
-            // Prepare header height and translation
-            int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
-            mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
-
-            // Setup components
-            setupActionBar();
+            // Setup List View
             setupListView();
 
             // Set title as artist name

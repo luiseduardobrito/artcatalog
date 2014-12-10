@@ -2,6 +2,8 @@ package com.devnup.artcatalog.activity;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AbsListView;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
 import com.devnup.artcatalog.activity.base.BaseActivity;
+import com.devnup.artcatalog.view.AlphaForegroundColorSpan;
 import com.devnup.artcatalog.view.image.ShowcaseImageView;
 import com.devnup.artcatalog.view.list.ArtistProfileListView;
 import com.devnup.artcatalog.ws.FreebaseUtil;
@@ -57,15 +60,25 @@ public class ArtistActivity extends BaseActivity {
     private int mMinHeaderTranslation;
     private Drawable mActionBarBackgroundDrawable;
 
+    private AlphaForegroundColorSpan mAlphaForegroundColorSpan;
     private View mPlaceHolderView;
 
     private TypedValue mTypedValue = new TypedValue();
+    private String currentTitle = "Loading...";
 
     @AfterViews
     void initViews() {
 
-        setTitle("Loading...");
-        setToolbarAlpha(0f);
+        // Prepare header height and translation
+        int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
+        mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
+
+        // Prepare actionbar title for fade
+        int mActionBarTitleColor = getResources().getColor(R.color.actionbar_title_color);
+        mAlphaForegroundColorSpan = new AlphaForegroundColorSpan(mActionBarTitleColor);
+
+        // Setup components
+        setupActionBar();
 
         if (artist == null && mid != null) {
 
@@ -73,17 +86,12 @@ public class ArtistActivity extends BaseActivity {
 
         } else {
 
-            // Prepare header height and translation
-            int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
-            mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
-
-            // Setup components
-            setupActionBar();
+            // Setup List View
             setupListView();
 
             // Set title as artist name
-            setTitle(artist.getName());
-            mToolbar.setTitle(artist.getName());
+            currentTitle = artist.getName();
+            mToolbar.setTitle(currentTitle);
 
             // Prepare images list
             List<String> images = new ArrayList<String>();
@@ -175,9 +183,11 @@ public class ArtistActivity extends BaseActivity {
 
     private void setToolbarAlpha(float alpha) {
 
-        //mAlphaForegroundColorSpan.setAlpha(1 - alpha);
-        //mSpannableString.setSpan(mAlphaForegroundColorSpan, 0, mSpannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        //getSupportActionBar().setTitle(mSpannableString);
+        SpannableString mSpannableString = SpannableString.valueOf(currentTitle);
+
+        mAlphaForegroundColorSpan.setAlpha(alpha);
+        mSpannableString.setSpan(mAlphaForegroundColorSpan, 0, mSpannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getSupportActionBar().setTitle(mSpannableString);
 
         int newAlpha = (int) (alpha * 255);
         mActionBarBackgroundDrawable.setAlpha(newAlpha);
@@ -193,10 +203,9 @@ public class ArtistActivity extends BaseActivity {
 
     private void setupActionBar() {
 
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null) {
+        if (mToolbar != null) {
             mActionBarBackgroundDrawable = mToolbar.getBackground();
+            mToolbar.setTitle(currentTitle);
             setToolbarAlpha(0f);
         }
 
