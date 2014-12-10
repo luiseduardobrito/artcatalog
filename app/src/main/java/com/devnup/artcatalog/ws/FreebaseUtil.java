@@ -1,12 +1,6 @@
 package com.devnup.artcatalog.ws;
 
-import com.devnup.artcatalog.ws.model.VisualArtistModel;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import com.devnup.artcatalog.ws.model.FreebaseTypedReferenceModel;
 
 /**
  * @author luiseduardobrito
@@ -15,6 +9,10 @@ import java.net.URLEncoder;
 public class FreebaseUtil {
 
     public static String getQuery() {
+        return FreebaseTypedReferenceModel.toFreebaseQuery(null, "/visual_art/visual_artist");
+    }
+
+    public static String getQuery2() {
 
         return "[{" +
                 "  \"id\": null," +
@@ -48,8 +46,7 @@ public class FreebaseUtil {
                 "  }]," +
                 "  \"/common/topic/image\": [{" +
                 "    \"id\": null," +
-                "    \"mid\": null," +
-                "    \"name\": null" +
+                "    \"mid\": null" +
                 "  }]," +
                 "  \"/visual_art/visual_artist/associated_periods_or_movements\": [{" +
                 "    \"id\": null," +

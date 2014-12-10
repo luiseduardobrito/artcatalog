@@ -90,6 +90,10 @@ public class ShowcaseImageView extends FrameLayout {
 
     private void swapImage() {
 
+        if(mImageViews.size() < 1) {
+            return;
+        }
+
         int inactiveIndex = mActiveImageIndex;
         mActiveImageIndex = (1 + mActiveImageIndex) % mImageViews.size();
 
@@ -192,5 +196,8 @@ public class ShowcaseImageView extends FrameLayout {
 
             this.addView(iv);
         }
+
+        mHandler.removeCallbacks(mSwapImageRunnable);
+        mHandler.post(mSwapImageRunnable);
     }
 }

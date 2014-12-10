@@ -24,7 +24,7 @@
             android:textColor="@color/black" />
 
         <TextView
-            android:id="@+id/profile_birth"
+            android:id="@+id/profile_artist"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -32,7 +32,7 @@
             android:textColor="@color/black" />
 
         <TextView
-            android:id="@+id/profile_nationality"
+            android:id="@+id/profile_subtitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"

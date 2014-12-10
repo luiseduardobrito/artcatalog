@@ -5,13 +5,15 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author luiseduardobrito
  * @since 12/8/14.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FreebaseReferenceModel extends BaseModel {
+public class FreebaseLocationReferenceModel extends BaseModel {
 
     @JsonProperty("id")
     String id = null;
@@ -19,15 +21,16 @@ public class FreebaseReferenceModel extends BaseModel {
     @JsonProperty("mid")
     String mid = null;
 
-    @JsonProperty("name")
-    String name = null;
+    @JsonProperty("location")
+    List<FreebaseReferenceModel> location = new ArrayList<>();
 
-    public FreebaseReferenceModel() {
+    public FreebaseLocationReferenceModel() {
     }
 
     public static String toFreebaseQuery() {
 
-        FreebaseReferenceModel model = new FreebaseReferenceModel();
+        FreebaseLocationReferenceModel model = new FreebaseLocationReferenceModel();
+        model.location.add(new FreebaseReferenceModel());
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -40,8 +43,9 @@ public class FreebaseReferenceModel extends BaseModel {
 
     public static String toFreebaseQuery(String mid) {
 
-        FreebaseReferenceModel model = new FreebaseReferenceModel();
+        FreebaseLocationReferenceModel model = new FreebaseLocationReferenceModel();
         model.mid = mid;
+        model.location.add(new FreebaseReferenceModel());
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -68,11 +72,11 @@ public class FreebaseReferenceModel extends BaseModel {
         this.mid = mid;
     }
 
-    public String getName() {
-        return name;
+    public List<FreebaseReferenceModel> getLocation() {
+        return location;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLocation(List<FreebaseReferenceModel> location) {
+        this.location = location;
     }
 }

@@ -31,22 +31,17 @@
         <activity
             android:name="com.devnup.artcatalog.activity.ArtistActivity_"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.devnup.artcatalog.activity.HomeActivity_" />
-        </activity>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.devnup.artcatalog.activity.SearchResultsActivity_"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" />
 
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.devnup.artcatalog.activity.HomeActivity_" />
-        </activity>
+        <activity
+            android:name="com.devnup.artcatalog.activity.ArtworkActivity_"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

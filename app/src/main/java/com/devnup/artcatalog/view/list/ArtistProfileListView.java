@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.devnup.artcatalog.R;
+import com.devnup.artcatalog.activity.ArtworkActivity_;
 import com.devnup.artcatalog.view.ArtistProfileInfoView;
 import com.devnup.artcatalog.view.ArtistProfileInfoView_;
 import com.devnup.artcatalog.view.card.CardContainerView;
@@ -16,8 +17,8 @@ import com.devnup.artcatalog.view.card.ContainedCardView;
 import com.devnup.artcatalog.view.card.ContainedCardView_;
 import com.devnup.artcatalog.ws.FreebaseUtil;
 import com.devnup.artcatalog.ws.model.FreebaseReferenceModel;
+import com.devnup.artcatalog.ws.model.FreebaseTypedReferenceModel;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
-import com.devnup.artcatalog.ws.model.VisualArtworkModel;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EView;
@@ -117,17 +118,27 @@ public class ArtistProfileListView extends ListView {
 
         ContainedCardView containedCardView = ContainedCardView_.build(getContext());
         containedCardView.setVisibility(View.VISIBLE);
+        containedCardView.setClickable(true);
 
         // Art Forms Section
         List<FreebaseReferenceModel> artForms = artist.getArtForms();
-        List<VisualArtworkModel> artworks = artist.getArtworks();
+        List<FreebaseReferenceModel> artworks = artist.getArtworks();
         List<FreebaseReferenceModel> periods = artist.getPeriods();
 
         // Fill Artwork cards
         if (section == 1 && artworks != null && artworks.size() > position) {
 
+            final String mid = artworks.get(position).getMid();
+
             containedCardView.setTitle(artworks.get(position).getName());
             containedCardView.setImageUrl(FreebaseUtil.getImageURL(artworks.get(position).getMid()));
+
+            containedCardView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArtworkActivity_.intent(getContext()).mid(mid).start();
+                }
+            });
 
         }
 

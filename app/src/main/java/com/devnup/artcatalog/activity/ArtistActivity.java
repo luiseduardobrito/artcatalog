@@ -5,17 +5,23 @@ import android.support.v7.app.ActionBar;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
+import com.devnup.artcatalog.activity.base.BaseActivity;
 import com.devnup.artcatalog.view.image.ShowcaseImageView;
 import com.devnup.artcatalog.view.list.ArtistProfileListView;
 import com.devnup.artcatalog.ws.FreebaseUtil;
 import com.devnup.artcatalog.ws.model.FreebaseReferenceModel;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
+import com.devnup.artcatalog.ws.service.ArtRestService;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -27,6 +33,12 @@ import java.util.List;
  */
 @EActivity(R.layout.activity_artist)
 public class ArtistActivity extends BaseActivity {
+
+    @Extra
+    String mid;
+
+    @Bean
+    ArtRestService rest;
 
     @Extra
     VisualArtistModel artist;
@@ -52,32 +64,58 @@ public class ArtistActivity extends BaseActivity {
     @AfterViews
     void initViews() {
 
-        int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
-        mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
+        if (artist == null && mid != null) {
 
-        setupActionBar();
-        setupListView();
+            getArtistForInit(mid);
 
-        // Set title as artist name
-        setTitle(artist.getName());
-        mToolbar.setTitle(artist.getName());
+        } else {
 
-        // Prepare images list
-        List<String> images = new ArrayList<String>();
-        for (FreebaseReferenceModel model : artist.getImage()) {
-            images.add(FreebaseUtil.getImageURL(model.getId()));
+            // Prepare header height and translation
+            int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
+            mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
+
+            // Setup components
+            setupActionBar();
+            setupListView();
+
+            // Set title as artist name
+            setTitle(artist.getName());
+            mToolbar.setTitle(artist.getName());
+
+            // Prepare images list
+            List<String> images = new ArrayList<String>();
+            for (FreebaseReferenceModel model : artist.getImage()) {
+                images.add(FreebaseUtil.getImageURL(model.getId()));
+            }
+
+            // If there's many, remove first for profile
+            if (images.size() > 1) {
+                images.remove(0);
+            }
+
+            // Populate images
+            mHeaderPicture.fillImageViews(images);
+
+            // Prepare artist profile
+            mArtistProfileListView.setArtist(artist);
         }
+    }
 
-        // If there's many, remove first for profile
-        if (images.size() > 1) {
-            images.remove(0);
+    @Background
+    void getArtistForInit(String mid) {
+        notifyArtistIsReady(rest.getVisualArtist(mid));
+    }
+
+    @UiThread
+    void notifyArtistIsReady(VisualArtistModel artist) {
+
+        if (artist != null) {
+            this.artist = artist;
+            initViews();
+        } else {
+            Toast.makeText(getApplicationContext(), "Could not fetch artist: error", Toast.LENGTH_SHORT).show();
+            this.finish();
         }
-
-        // Populate images
-        mHeaderPicture.fillImageViews(images);
-
-        // Prepare artist profile
-        mArtistProfileListView.setArtist(artist);
     }
 
     private void setupListView() {

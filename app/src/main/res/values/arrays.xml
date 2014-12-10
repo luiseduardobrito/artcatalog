@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="artist_profile_sections">
-
         <item>Featured Artworks</item>
         <item>Associated Periods or Movements</item>
         <item>Art Forms</item>
+    </string-array>
+    <string-array name="artwork_profile_sections">
+        <item>Associated Periods or Movements</item>
+        <item>Associated Locations</item>
+        <item>Associated Subjects</item>
     </string-array>
 </resources>

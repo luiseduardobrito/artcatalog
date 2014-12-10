@@ -14,7 +14,7 @@ import java.util.List;
  * @since 12/7/14.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class VisualArtistModel extends BaseModel {
+public class VisualArtistModel extends FreebaseTypedReferenceModel {
 
     @JsonProperty("id")
     String id = null;
@@ -35,7 +35,7 @@ public class VisualArtistModel extends BaseModel {
     List<FreebaseReferenceModel> artForms = new ArrayList<>();
 
     @JsonProperty("/visual_art/visual_artist/artworks")
-    List<VisualArtworkModel> artworks = new ArrayList<>();
+    List<FreebaseReferenceModel> artworks = new ArrayList<>();
 
     @JsonProperty("/visual_art/visual_artist/associated_periods_or_movements")
     List<FreebaseReferenceModel> periods = new ArrayList<>();
@@ -50,8 +50,31 @@ public class VisualArtistModel extends BaseModel {
 
         VisualArtistModel artist = new VisualArtistModel();
 
+        artist.image.add(new FreebaseReferenceModel());
         artist.artForms.add(new FreebaseReferenceModel());
-        artist.artworks.add(new VisualArtworkModel());
+        artist.artworks.add(new FreebaseReferenceModel());
+        artist.periods.add(new FreebaseReferenceModel());
+        artist.placeOfBirth.add(new FreebaseReferenceModel());
+        artist.nationality.add(new FreebaseReferenceModel());
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return "[" + mapper.writeValueAsString(artist) + "]";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String toFreebaseQuery(String mid) {
+
+        VisualArtistModel artist = new VisualArtistModel();
+
+        artist.mid = mid;
+        artist.image.add(new FreebaseReferenceModel());
+        artist.artForms.add(new FreebaseReferenceModel());
+        artist.artworks.add(new FreebaseReferenceModel());
         artist.periods.add(new FreebaseReferenceModel());
         artist.placeOfBirth.add(new FreebaseReferenceModel());
         artist.nationality.add(new FreebaseReferenceModel());
@@ -109,11 +132,11 @@ public class VisualArtistModel extends BaseModel {
         return artForms;
     }
 
-    public List<VisualArtworkModel> getArtworks() {
+    public List<FreebaseReferenceModel> getArtworks() {
         return artworks;
     }
 
-    public void setArtworks(List<VisualArtworkModel> artworks) {
+    public void setArtworks(List<FreebaseReferenceModel> artworks) {
         this.artworks = artworks;
     }
 

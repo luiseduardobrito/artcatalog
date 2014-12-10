@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.devnup.artcatalog.activity;
+package com.devnup.artcatalog.activity.base;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,10 +29,10 @@ import org.androidannotations.annotations.ViewById;
 public abstract class BaseActivity extends ActionBarActivity {
 
     @ViewById(R.id.toolbar)
-    Toolbar mToolbar;
+    protected Toolbar mToolbar;
 
     @AfterViews
-    void init() {
+    protected void init() {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 

@@ -11,7 +11,7 @@ import java.io.IOException;
  * @since 12/8/14.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FreebaseReferenceModel extends BaseModel {
+public class FreebaseTypedReferenceModel extends BaseModel {
 
     @JsonProperty("id")
     String id = null;
@@ -19,15 +19,18 @@ public class FreebaseReferenceModel extends BaseModel {
     @JsonProperty("mid")
     String mid = null;
 
+    @JsonProperty("type")
+    String type = null;
+
     @JsonProperty("name")
     String name = null;
 
-    public FreebaseReferenceModel() {
+    FreebaseTypedReferenceModel() {
     }
 
     public static String toFreebaseQuery() {
 
-        FreebaseReferenceModel model = new FreebaseReferenceModel();
+        FreebaseTypedReferenceModel model = new FreebaseTypedReferenceModel();
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -40,8 +43,25 @@ public class FreebaseReferenceModel extends BaseModel {
 
     public static String toFreebaseQuery(String mid) {
 
-        FreebaseReferenceModel model = new FreebaseReferenceModel();
+        FreebaseTypedReferenceModel model = new FreebaseTypedReferenceModel();
         model.mid = mid;
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            return "[" + mapper.writeValueAsString(model) + "]";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String toFreebaseQuery(String mid, String type) {
+
+        FreebaseTypedReferenceModel model = new FreebaseTypedReferenceModel();
+
+        model.mid = mid;
+        model.type = type;
+
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -74,5 +94,13 @@ public class FreebaseReferenceModel extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

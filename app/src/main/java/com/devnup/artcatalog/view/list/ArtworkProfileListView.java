@@ -8,15 +8,15 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.devnup.artcatalog.R;
-import com.devnup.artcatalog.view.ArtistProfileInfoView;
-import com.devnup.artcatalog.view.ArtistProfileInfoView_;
+import com.devnup.artcatalog.view.ArtworkProfileInfoView;
+import com.devnup.artcatalog.view.ArtworkProfileInfoView_;
 import com.devnup.artcatalog.view.card.CardContainerView;
 import com.devnup.artcatalog.view.card.CardContainerView_;
 import com.devnup.artcatalog.view.card.ContainedCardView;
 import com.devnup.artcatalog.view.card.ContainedCardView_;
 import com.devnup.artcatalog.ws.FreebaseUtil;
+import com.devnup.artcatalog.ws.model.FreebaseLocationReferenceModel;
 import com.devnup.artcatalog.ws.model.FreebaseReferenceModel;
-import com.devnup.artcatalog.ws.model.VisualArtistModel;
 import com.devnup.artcatalog.ws.model.VisualArtworkModel;
 
 import org.androidannotations.annotations.AfterViews;
@@ -34,10 +34,10 @@ import java.util.List;
 @EView
 public class ArtworkProfileListView extends ListView {
 
-    @StringArrayRes(R.array.artist_profile_sections)
+    @StringArrayRes(R.array.artwork_profile_sections)
     String[] titles;
 
-    VisualArtistModel artist;
+    VisualArtworkModel artwork;
 
     public ArtworkProfileListView(Context context) {
         super(context);
@@ -58,9 +58,9 @@ public class ArtworkProfileListView extends ListView {
     }
 
     @UiThread
-    public void setArtist(VisualArtistModel artist) {
+    public void setArtwork(VisualArtworkModel artwork) {
 
-        this.artist = artist;
+        this.artwork = artwork;
 
         setAdapter(new BaseAdapter() {
 
@@ -83,7 +83,7 @@ public class ArtworkProfileListView extends ListView {
             public View getView(int position, View convertView, ViewGroup parent) {
 
                 if (position == 0) {
-                    return getArtistProfileInfoView(convertView);
+                    return getArtworkProfileInfoView(convertView);
                 } else {
                     return getCardContainer(position, convertView);
                 }
@@ -117,58 +117,59 @@ public class ArtworkProfileListView extends ListView {
 
         ContainedCardView containedCardView = ContainedCardView_.build(getContext());
         containedCardView.setVisibility(View.VISIBLE);
+        containedCardView.setClickable(true);
 
-        // Art Forms Section
-        List<VisualArtworkModel> artworks = artist.getArtworks();
-        List<FreebaseReferenceModel> artForms = artist.getArtForms();
-        List<FreebaseReferenceModel> periods = artist.getPeriods();
+        List<FreebaseReferenceModel> periods = artwork.getPeriod();
+        List<FreebaseReferenceModel> subjects = artwork.getSubjects();
+        List<FreebaseLocationReferenceModel> locations = artwork.getLocations();
 
-        // Fill Artwork cards
-        if (section == 1 && artworks != null && artworks.size() > position) {
-
-            containedCardView.setTitle(artworks.get(position).getName());
-            containedCardView.setImageUrl(FreebaseUtil.getImageURL(artworks.get(position).getMid()));
-
-        }
-
-        // Fill Periods cards
-        else if (section == 2 && periods != null && periods.size() > position) {
+        // Artwork periods
+        if (section == 1 && periods != null && periods.size() > position) {
 
             containedCardView.setTitle(periods.get(position).getName());
             containedCardView.setImageUrl(FreebaseUtil.getImageURL(periods.get(position).getMid()));
 
         }
 
-        // Fill Art Form cards
-        else if (section == 3 && artForms != null && artForms.size() > position) {
+        // Artwork locations
+        else if (section == 2 && locations != null && locations.size() > position && locations.get(position).getLocation() != null) {
 
-            containedCardView.setTitle(artForms.get(position).getName());
-            containedCardView.setImageUrl(FreebaseUtil.getImageURL(artForms.get(position).getMid()));
+            containedCardView.setTitle(locations.get(position).getLocation().get(0).getName());
+            containedCardView.setImageUrl(FreebaseUtil.getImageURL(locations.get(position).getLocation().get(0).getMid()));
 
-        } else {
+        }
 
+        // Artwork subjects
+        else if (section == 3 && subjects != null && subjects.size() > position) {
+
+            containedCardView.setTitle(subjects.get(position).getName());
+            containedCardView.setImageUrl(FreebaseUtil.getImageURL(subjects.get(position).getMid()));
+
+        }
+
+        // Oops, card failed
+        else {
             containedCardView.setVisibility(View.INVISIBLE);
         }
 
         return containedCardView;
-
     }
 
-    private ArtistProfileInfoView getArtistProfileInfoView(View convertView) {
+    private ArtworkProfileInfoView getArtworkProfileInfoView(View convertView) {
 
-        ArtistProfileInfoView view;
+        ArtworkProfileInfoView view;
 
-        if (convertView != null && convertView instanceof ArtistProfileInfoView) {
-            view = (ArtistProfileInfoView) convertView;
+        if (convertView != null && convertView instanceof ArtworkProfileInfoView) {
+            view = (ArtworkProfileInfoView) convertView;
         } else {
-            view = ArtistProfileInfoView_.build(getContext());
+            view = ArtworkProfileInfoView_.build(getContext());
         }
 
-        view.setArtist(ArtworkProfileListView.this.artist);
+        view.setArtwork(ArtworkProfileListView.this.artwork);
         return view;
     }
 
-    public VisualArtistModel getArtist() {
-        return this.artist;
+    public VisualArtworkModel getArtwork() {
+        return this.artwork;
     }
 }

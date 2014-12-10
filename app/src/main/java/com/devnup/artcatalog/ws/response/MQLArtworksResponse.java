@@ -1,6 +1,6 @@
 package com.devnup.artcatalog.ws.response;
 
-import com.devnup.artcatalog.ws.model.VisualArtistModel;
+import com.devnup.artcatalog.ws.model.VisualArtworkModel;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -10,22 +10,22 @@ import java.util.List;
  * @author luiseduardobrito
  * @since 12/7/14.
  */
-public class MQLReadResponse extends BaseResponse {
+public class MQLArtworksResponse extends BaseResponse {
 
     @JsonProperty("result")
-    List<VisualArtistModel> result;
+    List<VisualArtworkModel> result;
 
     @JsonProperty("cursor")
     String cursor;
 
-    MQLReadResponse() {
+    MQLArtworksResponse() {
     }
 
-    public List<VisualArtistModel> getResult() {
+    public List<VisualArtworkModel> getResult() {
         return result;
     }
 
-    public void setResult(List<VisualArtistModel> result) {
+    public void setResult(List<VisualArtworkModel> result) {
         this.result = result;
     }
 

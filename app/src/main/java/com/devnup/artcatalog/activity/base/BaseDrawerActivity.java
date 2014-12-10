@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.devnup.artcatalog.activity;
+package com.devnup.artcatalog.activity.base;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -38,18 +38,18 @@ import org.androidannotations.annotations.ViewById;
 public abstract class BaseDrawerActivity extends ActionBarActivity {
 
     @ViewById(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
+    protected DrawerLayout mDrawerLayout;
 
     @ViewById(R.id.drawer)
-    ListView mDrawerList;
+    protected ListView mDrawerList;
 
     @ViewById(R.id.toolbar)
-    Toolbar mToolbar;
+    protected Toolbar mToolbar;
 
-    SupportActionBarDrawerToggle mDrawerToggle;
-    DrawerArrowDrawable drawerArrow;
+    protected SupportActionBarDrawerToggle mDrawerToggle;
+    protected DrawerArrowDrawable drawerArrow;
 
-    String[] drawerLabels = {
+    protected String[] drawerLabels = {
             "Featured",
             "Favorites",
             "Nearby",
@@ -58,7 +58,7 @@ public abstract class BaseDrawerActivity extends ActionBarActivity {
             "Preferences"
     };
 
-    int[] drawerIcons = {
+    protected int[] drawerIcons = {
             R.drawable.ic_dashboard_grey,
             R.drawable.ic_favorite_grey600_36dp,
             R.drawable.ic_explore_grey600_36dp,
@@ -68,7 +68,7 @@ public abstract class BaseDrawerActivity extends ActionBarActivity {
     };
 
     @AfterViews
-    void initDrawer() {
+    protected void initDrawer() {
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
 

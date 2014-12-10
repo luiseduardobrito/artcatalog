@@ -5,17 +5,22 @@ import android.support.v7.app.ActionBar;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
+import com.devnup.artcatalog.activity.base.BaseActivity;
 import com.devnup.artcatalog.view.image.ShowcaseImageView;
-import com.devnup.artcatalog.view.list.ArtistProfileListView;
+import com.devnup.artcatalog.view.list.ArtworkProfileListView;
 import com.devnup.artcatalog.ws.FreebaseUtil;
-import com.devnup.artcatalog.ws.model.FreebaseReferenceModel;
-import com.devnup.artcatalog.ws.model.VisualArtistModel;
+import com.devnup.artcatalog.ws.model.VisualArtworkModel;
+import com.devnup.artcatalog.ws.service.ArtRestService;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -25,17 +30,23 @@ import java.util.List;
  * @author luiseduardobrito
  * @since 12/8/14.
  */
-@EActivity(R.layout.activity_artist)
+@EActivity(R.layout.activity_artwork)
 public class ArtworkActivity extends BaseActivity {
 
     @Extra
-    VisualArtistModel artist;
+    String mid;
+
+    @Bean
+    ArtRestService rest;
+
+    @Extra
+    VisualArtworkModel artwork;
 
     @ViewById(R.id.header_picture)
     ShowcaseImageView mHeaderPicture;
 
     @ViewById(R.id.info_list)
-    ArtistProfileListView mArtistProfileListView;
+    ArtworkProfileListView mArtworkProfileListView;
 
     @ViewById(R.id.header)
     View mHeader;
@@ -52,40 +63,59 @@ public class ArtworkActivity extends BaseActivity {
     @AfterViews
     void initViews() {
 
-        int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
-        mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
+        if (artwork == null && mid != null) {
 
-        setupActionBar();
-        setupListView();
+            getArtworkForInit(mid);
 
-        // Set title as artist name
-        setTitle(artist.getName());
-        mToolbar.setTitle(artist.getName());
+        } else {
 
-        // Prepare images list
-        List<String> images = new ArrayList<String>();
-        for (FreebaseReferenceModel model : artist.getImage()) {
-            images.add(FreebaseUtil.getImageURL(model.getId()));
+            // Prepare header height and translation
+            int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
+            mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
+
+            // Setup components
+            setupActionBar();
+            setupListView();
+
+            // Set title as artist name
+            setTitle(artwork.getName());
+            mToolbar.setTitle(artwork.getName());
+
+            // Prepare images list
+            List<String> images = new ArrayList<>();
+            images.add(FreebaseUtil.getImageURL(artwork.getMid()));
+
+            // Populate images
+            mHeaderPicture.fillImageViews(images);
+
+            // Prepare artist profile
+            mArtworkProfileListView.setArtwork(artwork);
         }
+    }
 
-        // If there's many, remove first for profile
-        if (images.size() > 1) {
-            images.remove(0);
+    @Background
+    void getArtworkForInit(String mid) {
+        notifyArtworkIsReady(rest.getVisualArtwork(mid));
+    }
+
+    @UiThread
+    void notifyArtworkIsReady(VisualArtworkModel artwork) {
+
+        if (artwork != null) {
+            this.artwork = artwork;
+            initViews();
+        } else {
+            Toast.makeText(getApplicationContext(), "Could not fetch artwork: error", Toast.LENGTH_SHORT).show();
+            this.finish();
         }
-
-        // Populate images
-        mHeaderPicture.fillImageViews(images);
-
-        // Prepare artist profile
-        mArtistProfileListView.setArtist(artist);
     }
 
     private void setupListView() {
 
-        mPlaceHolderView = getLayoutInflater().inflate(R.layout.view_header_placeholder, mArtistProfileListView, false);
-        mArtistProfileListView.addHeaderView(mPlaceHolderView);
+        mPlaceHolderView = getLayoutInflater().inflate(R.layout.view_header_placeholder, mArtworkProfileListView, false);
+        mArtworkProfileListView.addHeaderView(mPlaceHolderView);
 
-        mArtistProfileListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        mArtworkProfileListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 return;
@@ -114,13 +144,13 @@ public class ArtworkActivity extends BaseActivity {
 
     public int getScrollY() {
 
-        View c = mArtistProfileListView.getChildAt(0);
+        View c = mArtworkProfileListView.getChildAt(0);
 
         if (c == null) {
             return 0;
         }
 
-        int firstVisiblePosition = mArtistProfileListView.getFirstVisiblePosition();
+        int firstVisiblePosition = mArtworkProfileListView.getFirstVisiblePosition();
         int top = c.getTop();
 
         int headerHeight = 0;

@@ -20,7 +20,7 @@ import org.androidannotations.annotations.ViewById;
 @EViewGroup(R.layout.view_card_contained)
 public class ContainedCardView extends CardView {
 
-    private static final int RADIUS = 8;
+    private static final int RADIUS = 4;
 
     @ViewById(R.id.title)
     TextView mTitle;
