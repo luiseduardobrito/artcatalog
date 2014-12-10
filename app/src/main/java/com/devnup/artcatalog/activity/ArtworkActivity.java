@@ -2,6 +2,8 @@ package com.devnup.artcatalog.activity;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AbsListView;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
 import com.devnup.artcatalog.activity.base.BaseActivity;
+import com.devnup.artcatalog.view.AlphaForegroundColorSpan;
 import com.devnup.artcatalog.view.image.ShowcaseImageView;
 import com.devnup.artcatalog.view.list.ArtworkProfileListView;
 import com.devnup.artcatalog.ws.FreebaseUtil;
@@ -56,6 +59,9 @@ public class ArtworkActivity extends BaseActivity {
     private int mMinHeaderTranslation;
     private Drawable mActionBarBackgroundDrawable;
 
+    private AlphaForegroundColorSpan mAlphaForegroundColorSpan;
+    private String currentTitle = "Loading...";
+
     private View mPlaceHolderView;
 
     private TypedValue mTypedValue = new TypedValue();
@@ -69,6 +75,10 @@ public class ArtworkActivity extends BaseActivity {
         // Prepare header height and translation
         int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
         mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
+
+        // Prepare actionbar title for fade
+        int mActionBarTitleColor = getResources().getColor(R.color.actionbar_title_color);
+        mAlphaForegroundColorSpan = new AlphaForegroundColorSpan(mActionBarTitleColor);
 
         // Setup components
         setupActionBar();
@@ -169,9 +179,11 @@ public class ArtworkActivity extends BaseActivity {
 
     private void setToolbarAlpha(float alpha) {
 
-        //mAlphaForegroundColorSpan.setAlpha(1 - alpha);
-        //mSpannableString.setSpan(mAlphaForegroundColorSpan, 0, mSpannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        //getSupportActionBar().setTitle(mSpannableString);
+        SpannableString mSpannableString = SpannableString.valueOf(currentTitle);
+
+        mAlphaForegroundColorSpan.setAlpha(alpha);
+        mSpannableString.setSpan(mAlphaForegroundColorSpan, 0, mSpannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getSupportActionBar().setTitle(mSpannableString);
 
         int newAlpha = (int) (alpha * 255);
         mActionBarBackgroundDrawable.setAlpha(newAlpha);
@@ -187,20 +199,13 @@ public class ArtworkActivity extends BaseActivity {
 
     private void setupActionBar() {
 
-        ActionBar actionBar = getSupportActionBar();
-
-        if (actionBar != null) {
+        if (mToolbar != null) {
             mActionBarBackgroundDrawable = mToolbar.getBackground();
+            mToolbar.setTitle(currentTitle);
             setToolbarAlpha(0f);
         }
 
-        //getActionBarTitleView().setAlpha(0f);
     }
-
-    /*private TextView getActionBarTitleView() {
-        int id = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-        return (TextView) findViewById(id);
-    }*/
 
     public int getActionBarHeight() {
         if (mActionBarHeight != 0) {

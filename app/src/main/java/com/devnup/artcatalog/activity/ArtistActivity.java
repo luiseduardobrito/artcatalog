@@ -61,10 +61,11 @@ public class ArtistActivity extends BaseActivity {
     private Drawable mActionBarBackgroundDrawable;
 
     private AlphaForegroundColorSpan mAlphaForegroundColorSpan;
+    private String currentTitle = "Loading...";
+
     private View mPlaceHolderView;
 
     private TypedValue mTypedValue = new TypedValue();
-    private String currentTitle = "Loading...";
 
     @AfterViews
     void initViews() {
@@ -211,11 +212,6 @@ public class ArtistActivity extends BaseActivity {
 
         //getActionBarTitleView().setAlpha(0f);
     }
-
-    /*private TextView getActionBarTitleView() {
-        int id = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-        return (TextView) findViewById(id);
-    }*/
 
     public int getActionBarHeight() {
         if (mActionBarHeight != 0) {
