@@ -1,7 +1,6 @@
 package com.devnup.artcatalog.activity;
 
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.TypedValue;
@@ -222,5 +221,11 @@ public class ArtistActivity extends BaseActivity {
         getTheme().resolveAttribute(android.R.attr.actionBarSize, mTypedValue, true);
         mActionBarHeight = TypedValue.complexToDimensionPixelSize(mTypedValue.data, getResources().getDisplayMetrics());
         return mActionBarHeight;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 }

@@ -7,7 +7,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,10 +29,10 @@ public class VisualArtworkModel extends FreebaseTypedReferenceModel {
     String type = "/visual_art/artwork";
 
     @JsonProperty("/visual_art/artwork/date_begun")
-    Date dateBegun = null;
+    String dateBegun = null;
 
     @JsonProperty("/visual_art/artwork/date_completed")
-    Date dateCompleted = null;
+    String dateCompleted = null;
 
     @JsonProperty("/visual_art/artwork/artist")
     List<FreebaseReferenceModel> artist = new ArrayList<>();
@@ -150,19 +149,19 @@ public class VisualArtworkModel extends FreebaseTypedReferenceModel {
         this.type = type;
     }
 
-    public Date getDateBegun() {
+    public String getDateBegun() {
         return dateBegun;
     }
 
-    public void setDateBegun(Date dateBegun) {
+    public void setDateBegun(String dateBegun) {
         this.dateBegun = dateBegun;
     }
 
-    public Date getDateCompleted() {
+    public String getDateCompleted() {
         return dateCompleted;
     }
 
-    public void setDateCompleted(Date dateCompleted) {
+    public void setDateCompleted(String dateCompleted) {
         this.dateCompleted = dateCompleted;
     }
 

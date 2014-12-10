@@ -73,14 +73,14 @@ public class ArtworkProfileInfoView extends FrameLayout {
 
                 subtitleStr
                         .append(subtitleStr.length() > 0 ? " - " : "")
-                        .append(simple.format(artwork.getDateBegun()));
+                        .append(artwork.getDateBegun());
             }
 
             if (artwork.getDateCompleted() != null && artwork.getDateBegun() != artwork.getDateCompleted()) {
 
                 subtitleStr
-                        .append(subtitleStr.length() > 0 ? "/" : "")
-                        .append(simple.format(artwork.getDateCompleted()));
+                        .append(subtitleStr.length() > 0 ? " to " : "")
+                        .append(artwork.getDateCompleted());
             }
 
             mSubtitleView.setText(subtitleStr.toString());

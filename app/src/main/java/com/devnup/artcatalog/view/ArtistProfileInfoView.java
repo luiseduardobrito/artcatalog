@@ -11,6 +11,8 @@ import com.devnup.artcatalog.ws.FreebaseUtil;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.AfterTextChange;
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
@@ -37,6 +39,12 @@ public class ArtistProfileInfoView extends FrameLayout {
     @ViewById(R.id.profile_birth)
     TextView mBirthView;
 
+    @ViewById(R.id.profile_button_left)
+    ProfileButtonView mProfileLeftButtonView;
+
+    @ViewById(R.id.profile_button_right)
+    ProfileButtonView mProfileRightButtonView;
+
     public ArtistProfileInfoView(Context context) {
         super(context);
     }
@@ -47,6 +55,16 @@ public class ArtistProfileInfoView extends FrameLayout {
 
     public ArtistProfileInfoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    @AfterViews
+    void init() {
+
+        mProfileLeftButtonView.setImage(R.drawable.ic_favorite_outline_black_36dp);
+        mProfileLeftButtonView.setText("Like");
+
+        mProfileRightButtonView.setImage(R.drawable.ic_open_in_browser_black_36dp);
+        mProfileRightButtonView.setText("Wikipedia");
     }
 
     public VisualArtistModel getArtist() {

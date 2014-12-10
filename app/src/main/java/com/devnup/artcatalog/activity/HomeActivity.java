@@ -143,4 +143,10 @@ public class HomeActivity extends BaseDrawerActivity {
             }
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
 }
