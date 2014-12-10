@@ -64,6 +64,9 @@ public class ArtistActivity extends BaseActivity {
     @AfterViews
     void initViews() {
 
+        setTitle("Loading...");
+        setToolbarAlpha(0f);
+
         if (artist == null && mid != null) {
 
             getArtistForInit(mid);

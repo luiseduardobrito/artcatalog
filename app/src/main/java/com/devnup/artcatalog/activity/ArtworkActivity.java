@@ -63,6 +63,9 @@ public class ArtworkActivity extends BaseActivity {
     @AfterViews
     void initViews() {
 
+        setTitle("Loading...");
+        setToolbarAlpha(0f);
+
         if (artwork == null && mid != null) {
 
             getArtworkForInit(mid);
