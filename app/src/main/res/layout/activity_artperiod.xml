@@ -19,7 +19,7 @@
 
     </FrameLayout>
 
-    <com.devnup.artcatalog.view.list.ArtistProfileListView_
+    <com.devnup.artcatalog.view.list.ArtPeriodProfileListView_
         android:id="@+id/info_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

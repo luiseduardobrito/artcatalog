@@ -27,5 +27,13 @@
 
     <include layout="@layout/toolbar" />
 
+    <ProgressBar
+        android:id="@+id/google_progress"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_margin="12dp"
+        android:visibility="gone"
+        android:layout_gravity="right|top"/>
+
 </FrameLayout>
 

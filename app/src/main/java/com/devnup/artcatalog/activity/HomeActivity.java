@@ -21,6 +21,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
@@ -33,6 +34,7 @@ import com.devnup.artcatalog.ws.FreebaseUtil;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
 import com.devnup.artcatalog.ws.response.MQLArtistsResponse;
 import com.devnup.artcatalog.ws.service.ArtRestService;
+import com.jpardogo.android.googleprogressbar.library.FoldingCirclesDrawable;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -61,10 +63,17 @@ public class HomeActivity extends BaseDrawerActivity {
     @SystemService
     SearchManager searchManager;
 
+    @ViewById(R.id.google_progress)
+    ProgressBar mProgressBar;
+
     boolean loading = false;
 
     @AfterViews
     void init() {
+
+        mProgressBar.setVisibility(View.VISIBLE);
+        mProgressBar.setIndeterminateDrawable(new FoldingCirclesDrawable.Builder(this).build());
+
         performQuery(FreebaseUtil.getQuery(), true);
     }
 
@@ -97,6 +106,9 @@ public class HomeActivity extends BaseDrawerActivity {
     void notifyResult(MQLArtistsResponse response) {
 
         if (loading) {
+
+            mProgressBar.setVisibility(View.GONE);
+
             loading = false;
             boolean first = false;
 
@@ -142,11 +154,5 @@ public class HomeActivity extends BaseDrawerActivity {
                 ((CardListAdapter) mCardListView.getAdapter()).setCardList(cardList);
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
     }
 }

@@ -13,10 +13,9 @@ import com.devnup.artcatalog.R;
 import com.devnup.artcatalog.activity.base.BaseActivity;
 import com.devnup.artcatalog.view.AlphaForegroundColorSpan;
 import com.devnup.artcatalog.view.image.ShowcaseImageView;
-import com.devnup.artcatalog.view.list.ArtistProfileListView;
+import com.devnup.artcatalog.view.list.ArtPeriodProfileListView;
 import com.devnup.artcatalog.ws.FreebaseUtil;
-import com.devnup.artcatalog.ws.model.FreebaseReferenceModel;
-import com.devnup.artcatalog.ws.model.VisualArtistModel;
+import com.devnup.artcatalog.ws.model.VisualArtPeriodModel;
 import com.devnup.artcatalog.ws.service.ArtRestService;
 import com.jpardogo.android.googleprogressbar.library.FoldingCirclesDrawable;
 
@@ -35,8 +34,8 @@ import java.util.List;
  * @author luiseduardobrito
  * @since 12/8/14.
  */
-@EActivity(R.layout.activity_artist)
-public class ArtistActivity extends BaseActivity {
+@EActivity(R.layout.activity_artperiod)
+public class ArtPeriodActivity extends BaseActivity {
 
     @Extra
     String mid;
@@ -45,13 +44,13 @@ public class ArtistActivity extends BaseActivity {
     ArtRestService rest;
 
     @Extra
-    VisualArtistModel artist;
+    VisualArtPeriodModel period;
 
     @ViewById(R.id.header_picture)
     ShowcaseImageView mHeaderPicture;
 
     @ViewById(R.id.info_list)
-    ArtistProfileListView mArtistProfileListView;
+    ArtPeriodProfileListView mArtPeriodProfileListView;
 
     @ViewById(R.id.header)
     View mHeader;
@@ -74,6 +73,9 @@ public class ArtistActivity extends BaseActivity {
     @AfterViews
     void initViews() {
 
+        // TODO: loading
+        setTitle("Loading...");
+
         // Prepare header height and translation
         int mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.header_height);
         mMinHeaderTranslation = -mHeaderHeight + getActionBarHeight();
@@ -85,12 +87,12 @@ public class ArtistActivity extends BaseActivity {
         // Setup components
         setupActionBar();
 
-        if (artist == null && mid != null) {
+        if (period == null && mid != null) {
 
             mProgressBar.setVisibility(View.VISIBLE);
             mProgressBar.setIndeterminateDrawable(new FoldingCirclesDrawable.Builder(this).build());
 
-            getArtistForInit(mid);
+            getArtworkForInit(mid);
 
         } else {
 
@@ -98,55 +100,45 @@ public class ArtistActivity extends BaseActivity {
             setupListView();
 
             // Set title as artist name
-            currentTitle = artist.getName();
+            currentTitle = period.getName();
 
             // Prepare images list
-            List<String> images = new ArrayList<String>();
-            for (FreebaseReferenceModel model : artist.getImage()) {
-                images.add(FreebaseUtil.getImageURL(model.getId()));
-            }
-
-            // If there's many, remove first for profile
-            if (images.size() > 1) {
-                images.remove(0);
-            }
+            List<String> images = new ArrayList<>();
+            images.add(FreebaseUtil.getImageURL(period.getMid()));
 
             // Populate images
             mHeaderPicture.fillImageViews(images);
 
             // Prepare artist profile
-            mArtistProfileListView.setArtist(artist);
-
-            // Setup Action Bar
-            setupActionBar();
+            mArtPeriodProfileListView.setArtPeriod(period);
         }
     }
 
     @Background
-    void getArtistForInit(String mid) {
-        notifyArtistIsReady(rest.getVisualArtist(mid));
+    void getArtworkForInit(String mid) {
+        notifyArtworkIsReady(rest.getVisualArtPeriod(mid));
     }
 
     @UiThread
-    void notifyArtistIsReady(VisualArtistModel artist) {
+    void notifyArtworkIsReady(VisualArtPeriodModel period) {
 
-        mProgressBar.setVisibility(View.GONE);
-
-        if (artist != null) {
-            this.artist = artist;
+        if (period != null) {
+            this.period = period;
             initViews();
         } else {
-            Toast.makeText(getApplicationContext(), "Could not fetch artist: error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Could not fetch art period: error", Toast.LENGTH_SHORT).show();
             this.finish();
         }
+
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private void setupListView() {
 
-        mPlaceHolderView = getLayoutInflater().inflate(R.layout.view_header_placeholder, mArtistProfileListView, false);
-        mArtistProfileListView.addHeaderView(mPlaceHolderView);
+        mPlaceHolderView = getLayoutInflater().inflate(R.layout.view_header_placeholder, mArtPeriodProfileListView, false);
+        mArtPeriodProfileListView.addHeaderView(mPlaceHolderView);
 
-        mArtistProfileListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        mArtPeriodProfileListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 return;
@@ -175,13 +167,13 @@ public class ArtistActivity extends BaseActivity {
 
     public int getScrollY() {
 
-        View c = mArtistProfileListView.getChildAt(0);
+        View c = mArtPeriodProfileListView.getChildAt(0);
 
         if (c == null) {
             return 0;
         }
 
-        int firstVisiblePosition = mArtistProfileListView.getFirstVisiblePosition();
+        int firstVisiblePosition = mArtPeriodProfileListView.getFirstVisiblePosition();
         int top = c.getTop();
 
         int headerHeight = 0;
@@ -221,7 +213,6 @@ public class ArtistActivity extends BaseActivity {
             setToolbarAlpha(0f);
         }
 
-        //getActionBarTitleView().setAlpha(0f);
     }
 
     public int getActionBarHeight() {

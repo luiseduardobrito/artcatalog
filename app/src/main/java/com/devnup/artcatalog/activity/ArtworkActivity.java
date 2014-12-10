@@ -1,12 +1,12 @@
 package com.devnup.artcatalog.activity;
 
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
@@ -17,6 +17,7 @@ import com.devnup.artcatalog.view.list.ArtworkProfileListView;
 import com.devnup.artcatalog.ws.FreebaseUtil;
 import com.devnup.artcatalog.ws.model.VisualArtworkModel;
 import com.devnup.artcatalog.ws.service.ArtRestService;
+import com.jpardogo.android.googleprogressbar.library.FoldingCirclesDrawable;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -54,6 +55,9 @@ public class ArtworkActivity extends BaseActivity {
     @ViewById(R.id.header)
     View mHeader;
 
+    @ViewById(R.id.google_progress)
+    ProgressBar mProgressBar;
+
     private static final String TAG = "NoBoringActionBarActivity";
     private int mActionBarHeight;
     private int mMinHeaderTranslation;
@@ -84,6 +88,9 @@ public class ArtworkActivity extends BaseActivity {
         setupActionBar();
 
         if (artwork == null && mid != null) {
+
+            mProgressBar.setVisibility(View.VISIBLE);
+            mProgressBar.setIndeterminateDrawable(new FoldingCirclesDrawable.Builder(this).build());
 
             getArtworkForInit(mid);
 
@@ -122,6 +129,8 @@ public class ArtworkActivity extends BaseActivity {
             Toast.makeText(getApplicationContext(), "Could not fetch artwork: error", Toast.LENGTH_SHORT).show();
             this.finish();
         }
+
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private void setupListView() {
@@ -213,11 +222,5 @@ public class ArtworkActivity extends BaseActivity {
         getTheme().resolveAttribute(android.R.attr.actionBarSize, mTypedValue, true);
         mActionBarHeight = TypedValue.complexToDimensionPixelSize(mTypedValue.data, getResources().getDisplayMetrics());
         return mActionBarHeight;
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
     }
 }

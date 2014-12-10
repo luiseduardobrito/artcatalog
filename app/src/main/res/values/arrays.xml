@@ -3,11 +3,15 @@
     <string-array name="artist_profile_sections">
         <item>Featured Artworks</item>
         <item>Associated Periods or Movements</item>
-        <item>Art Forms</item>
+        <item>Associated Art Forms</item>
     </string-array>
     <string-array name="artwork_profile_sections">
         <item>Associated Periods or Movements</item>
         <item>Associated Locations</item>
         <item>Associated Subjects</item>
+    </string-array>
+    <string-array name="period_profile_sections">
+        <item>Associated Artists</item>
+        <item>Associated Artworks</item>
     </string-array>
 </resources>

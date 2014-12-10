@@ -1,7 +1,9 @@
 package com.devnup.artcatalog.ws.service;
 
+import com.devnup.artcatalog.ws.model.VisualArtPeriodModel;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
 import com.devnup.artcatalog.ws.model.VisualArtworkModel;
+import com.devnup.artcatalog.ws.response.MQLArtPeriodsResponse;
 import com.devnup.artcatalog.ws.response.MQLArtistsResponse;
 import com.devnup.artcatalog.ws.response.MQLArtworksResponse;
 import com.devnup.artcatalog.ws.template.ArtRestTemplate;
@@ -63,6 +65,17 @@ public class ArtRestService {
     public VisualArtworkModel getVisualArtwork(String mid) {
 
         MQLArtworksResponse response = rest.readArtworksUsingMQL(VisualArtworkModel.toFreebaseQuery(mid));
+
+        if (response != null && response.getResult() != null && response.getResult().size() > 0) {
+            return response.getResult().get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public VisualArtPeriodModel getVisualArtPeriod(String mid) {
+
+        MQLArtPeriodsResponse response = rest.readArtPeriodsUsingMQL(VisualArtPeriodModel.toFreebaseQuery(mid));
 
         if (response != null && response.getResult() != null && response.getResult().size() > 0) {
             return response.getResult().get(0);

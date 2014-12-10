@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.devnup.artcatalog.R;
+import com.devnup.artcatalog.activity.ArtPeriodActivity_;
 import com.devnup.artcatalog.activity.ArtworkActivity_;
 import com.devnup.artcatalog.view.ArtistProfileInfoView;
 import com.devnup.artcatalog.view.ArtistProfileInfoView_;
@@ -151,7 +152,7 @@ public class ArtistProfileListView extends ListView {
             final String mid = artworks.get(position).getMid();
 
             containedCardView.setTitle(artworks.get(position).getName());
-            containedCardView.setImageUrl(FreebaseUtil.getImageURL(artworks.get(position).getMid()));
+            containedCardView.setImageUrl(FreebaseUtil.getImageURL(mid));
 
             containedCardView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -165,9 +166,17 @@ public class ArtistProfileListView extends ListView {
         // Fill Periods cards
         else if (section == 2 && periods != null && periods.size() > position) {
 
-            containedCardView.setTitle(periods.get(position).getName());
-            containedCardView.setImageUrl(FreebaseUtil.getImageURL(periods.get(position).getMid()));
+            final String mid = periods.get(position).getMid();
 
+            containedCardView.setTitle(periods.get(position).getName());
+            containedCardView.setImageUrl(FreebaseUtil.getImageURL(mid));
+
+            containedCardView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArtPeriodActivity_.intent(getContext()).mid(mid).start();
+                }
+            });
         }
 
         // Fill Art Form cards
