@@ -121,7 +121,7 @@ public class ArtworkProfileListView extends ListView {
         view.setCardList(cards);
 
         if(!atLeastOne) {
-            this.setVisibility(GONE);
+            view.setVisibility(GONE);
         }
 
         return view;
