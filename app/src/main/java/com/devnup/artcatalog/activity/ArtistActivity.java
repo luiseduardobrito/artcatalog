@@ -92,7 +92,6 @@ public class ArtistActivity extends BaseActivity {
 
             // Set title as artist name
             currentTitle = artist.getName();
-            mToolbar.setTitle(currentTitle);
 
             // Prepare images list
             List<String> images = new ArrayList<String>();
@@ -110,6 +109,9 @@ public class ArtistActivity extends BaseActivity {
 
             // Prepare artist profile
             mArtistProfileListView.setArtist(artist);
+
+            // Setup Action Bar
+            setupActionBar();
         }
     }
 

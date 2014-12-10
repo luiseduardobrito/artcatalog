@@ -93,8 +93,7 @@ public class ArtworkActivity extends BaseActivity {
             setupListView();
 
             // Set title as artist name
-            setTitle(artwork.getName());
-            mToolbar.setTitle(artwork.getName());
+            currentTitle = artwork.getName();
 
             // Prepare images list
             List<String> images = new ArrayList<>();
