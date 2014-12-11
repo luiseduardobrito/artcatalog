@@ -1,14 +1,12 @@
-package com.devnup.artcatalog.component.profile.impl;
+package com.devnup.artcatalog.activity.profile.impl;
 
 import android.content.Context;
 import android.view.View;
 
 import com.devnup.artcatalog.R;
-import com.devnup.artcatalog.activity.ArtPeriodActivity_;
-import com.devnup.artcatalog.activity.ArtworkActivity_;
-import com.devnup.artcatalog.component.profile.ProfileInfoData;
-import com.devnup.artcatalog.view.card.CardContainerView;
-import com.devnup.artcatalog.view.card.CardContainerView_;
+import com.devnup.artcatalog.activity.ArtPeriodProfileActivity_;
+import com.devnup.artcatalog.activity.ArtworkProfileActivity_;
+import com.devnup.artcatalog.activity.profile.ProfileInfoData;
 import com.devnup.artcatalog.view.card.ContainedCardView;
 import com.devnup.artcatalog.view.card.ContainedCardView_;
 import com.devnup.artcatalog.ws.FreebaseUtil;
@@ -69,6 +67,10 @@ public class ArtistProfileInfoData extends ProfileInfoData {
             for (FreebaseReferenceModel image : images) {
                 result.add(FreebaseUtil.getImageURL(images.get(0).getMid()));
             }
+
+        } else {
+
+            result.add(FreebaseUtil.getImageURL(artist.getMid()));
         }
 
         return result;
@@ -97,38 +99,8 @@ public class ArtistProfileInfoData extends ProfileInfoData {
     }
 
     @Override
-    public CardContainerView getCardContainer(int position, View convertView) {
-
-        CardContainerView view;
-
-        if (convertView != null && convertView instanceof CardContainerView) {
-            view = (CardContainerView) convertView;
-        } else {
-            view = CardContainerView_.build(context);
-        }
-
-        List<ContainedCardView> cards = new ArrayList<>();
-        Boolean atLeastOne = false;
-
-        for (int i = 0; i < 3; i++) {
-
-            ContainedCardView card = getContainedCard(position, i);
-
-            if (card.getVisibility() == View.VISIBLE) {
-                atLeastOne = true;
-            }
-
-            cards.add(card);
-        }
-
-        view.setTitle(getSectionTitles()[position - 1]);
-        view.setCardList(cards);
-
-        if (!atLeastOne) {
-            return null;
-        }
-
-        return view;
+    public Context getContext() {
+        return context;
     }
 
     @Override
@@ -154,7 +126,7 @@ public class ArtistProfileInfoData extends ProfileInfoData {
             containedCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArtworkActivity_.intent(context).mid(mid).start();
+                    ArtworkProfileActivity_.intent(context).mid(mid).start();
                 }
             });
 
@@ -171,7 +143,7 @@ public class ArtistProfileInfoData extends ProfileInfoData {
             containedCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArtPeriodActivity_.intent(context).mid(mid).start();
+                    ArtPeriodProfileActivity_.intent(context).mid(mid).start();
                 }
             });
         }

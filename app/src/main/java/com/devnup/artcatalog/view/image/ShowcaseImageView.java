@@ -101,9 +101,10 @@ public class ShowcaseImageView extends FrameLayout {
 
         final ImageView activeImageView = mImageViews.get(mActiveImageIndex);
         activeImageView.setAlpha(0.0f);
+
         animate(activeImageView);
 
-        if (inactiveIndex > 0) {
+        if (inactiveIndex >= 0) {
 
             ImageView inactiveImageView = mImageViews.get(inactiveIndex);
             inactiveImageView.animate()

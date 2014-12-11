@@ -1,4 +1,4 @@
-package com.devnup.artcatalog.component.profile;
+package com.devnup.artcatalog.activity.base;
 
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
@@ -10,7 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
-import com.devnup.artcatalog.activity.base.BaseActivity;
+import com.devnup.artcatalog.activity.profile.ProfileInfoData;
+import com.devnup.artcatalog.activity.profile.ProfileListView;
 import com.devnup.artcatalog.view.AlphaForegroundColorSpan;
 import com.devnup.artcatalog.view.image.ShowcaseImageView;
 import com.jpardogo.android.googleprogressbar.library.FoldingCirclesDrawable;
@@ -25,7 +26,7 @@ import org.androidannotations.annotations.ViewById;
  * @since 12/10/14.
  */
 @EActivity
-public abstract class ProfileActivity extends BaseActivity {
+public abstract class BaseProfileActivity extends BaseActivity {
 
     @ViewById(R.id.header_picture)
     protected ShowcaseImageView mHeaderPicture;
@@ -82,11 +83,11 @@ public abstract class ProfileActivity extends BaseActivity {
             // Setup Action Bar
             setupActionBar();
 
-            // Populate images
-            mHeaderPicture.fillImageViews(getData().getShowcaseImagesURL());
-
             // Prepare artist profile
             mProfileListView.setData(getData());
+
+            // Populate images
+            mHeaderPicture.fillImageViews(getData().getShowcaseImagesURL());
 
             // Setup List View
             setupListView();

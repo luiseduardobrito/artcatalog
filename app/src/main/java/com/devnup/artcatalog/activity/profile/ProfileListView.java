@@ -1,4 +1,4 @@
-package com.devnup.artcatalog.component.profile;
+package com.devnup.artcatalog.activity.profile;
 
 import android.content.Context;
 import android.util.AttributeSet;

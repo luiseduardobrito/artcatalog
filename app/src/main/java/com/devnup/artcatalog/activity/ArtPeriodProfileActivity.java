@@ -1,12 +1,15 @@
-package com.devnup.artcatalog.component.profile.impl;
+package com.devnup.artcatalog.activity;
 
 import android.view.View;
 
 import com.devnup.artcatalog.R;
-import com.devnup.artcatalog.component.profile.ProfileActivity;
-import com.devnup.artcatalog.component.profile.ProfileInfoData;
+import com.devnup.artcatalog.activity.base.BaseProfileActivity;
+import com.devnup.artcatalog.activity.profile.ProfileInfoData;
+import com.devnup.artcatalog.activity.profile.impl.ArtPeriodProfileInfoData;
+import com.devnup.artcatalog.activity.profile.impl.ArtworkProfileInfoData;
 import com.devnup.artcatalog.ws.model.BaseModel;
-import com.devnup.artcatalog.ws.model.VisualArtistModel;
+import com.devnup.artcatalog.ws.model.VisualArtPeriodModel;
+import com.devnup.artcatalog.ws.model.VisualArtworkModel;
 import com.devnup.artcatalog.ws.service.ArtRestService;
 
 import org.androidannotations.annotations.Background;
@@ -19,8 +22,8 @@ import org.androidannotations.annotations.UiThread;
  * @author luiseduardobrito
  * @since 12/11/14.
  */
-@EActivity(R.layout.activity_artist)
-public class ArtistProfileActivity extends ProfileActivity {
+@EActivity(R.layout.activity_profile)
+public class ArtPeriodProfileActivity extends BaseProfileActivity {
 
     @Extra
     String mid;
@@ -30,12 +33,12 @@ public class ArtistProfileActivity extends ProfileActivity {
 
     ProfileInfoData data;
 
-    VisualArtistModel artist;
+    VisualArtPeriodModel period;
 
     @Override
     @Background
     protected void getDataForInit(String mid) {
-        notifyDataForInit(rest.getVisualArtist(mid));
+        notifyDataForInit(rest.getVisualArtPeriod(mid));
     }
 
     @Override
@@ -53,10 +56,10 @@ public class ArtistProfileActivity extends ProfileActivity {
 
         mProgressBar.setVisibility(View.GONE);
 
-        if (model != null && model instanceof VisualArtistModel) {
+        if (model != null && model instanceof VisualArtPeriodModel) {
 
-            artist = (VisualArtistModel) model;
-            data = new ArtistProfileInfoData(this, artist);
+            period = (VisualArtPeriodModel) model;
+            data = new ArtPeriodProfileInfoData(this, period);
 
             notifyDataIsReady();
         }

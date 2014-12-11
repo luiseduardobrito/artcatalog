@@ -92,14 +92,6 @@ public class VisualArtistModel extends FreebaseTypedReferenceModel {
     public VisualArtistModel() {
     }
 
-    public List<FreebaseReferenceModel> getImage() {
-        return image;
-    }
-
-    public void setImage(List<FreebaseReferenceModel> image) {
-        this.image = image;
-    }
-
     public String getId() {
         return id;
     }
@@ -170,5 +162,13 @@ public class VisualArtistModel extends FreebaseTypedReferenceModel {
 
     public void setNationality(List<FreebaseReferenceModel> nationality) {
         this.nationality = nationality;
+    }
+
+    public List<FreebaseReferenceModel> getImage() {
+        return image;
+    }
+
+    public void setImage(List<FreebaseReferenceModel> image) {
+        this.image = image;
     }
 }

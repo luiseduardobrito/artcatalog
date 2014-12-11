@@ -26,8 +26,6 @@ import android.widget.Toast;
 
 import com.devnup.artcatalog.R;
 import com.devnup.artcatalog.activity.base.BaseDrawerActivity;
-import com.devnup.artcatalog.component.profile.impl.ArtistProfileActivity;
-import com.devnup.artcatalog.component.profile.impl.ArtistProfileActivity_;
 import com.devnup.artcatalog.view.card.FeaturedCardView;
 import com.devnup.artcatalog.view.card.FeaturedCardView_;
 import com.devnup.artcatalog.view.list.CardListView;

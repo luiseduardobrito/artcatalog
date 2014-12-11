@@ -1,4 +1,4 @@
-package com.devnup.artcatalog.component.profile;
+package com.devnup.artcatalog.activity.profile;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.devnup.artcatalog.R;
 import com.devnup.artcatalog.view.ProfileButtonView;
-import com.devnup.artcatalog.ws.FreebaseUtil;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.EViewGroup;
@@ -82,7 +81,7 @@ public class ProfileInfoView extends FrameLayout {
 
                 Picasso
                         .with(getContext())
-                        .load(FreebaseUtil.getImageURL(data.getImageURL()))
+                        .load(data.getImageURL())
                         .fit()
                         .centerCrop()
                         .into(mImageView);
