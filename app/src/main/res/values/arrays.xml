@@ -14,4 +14,8 @@
         <item>Associated Artists</item>
         <item>Associated Artworks</item>
     </string-array>
+    <string-array name="artform_profile_sections">
+        <item>Associated Artists</item>
+        <item>Associated Artworks</item>
+    </string-array>
 </resources>

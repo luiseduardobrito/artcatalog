@@ -1,10 +1,11 @@
-package com.devnup.artcatalog.activity.profile.impl;
+package com.devnup.artcatalog.activity.profile.data;
 
 import android.content.Context;
 import android.view.View;
 
 import com.devnup.artcatalog.R;
-import com.devnup.artcatalog.activity.ArtPeriodProfileActivity_;
+import com.devnup.artcatalog.activity.ProfileActivity;
+import com.devnup.artcatalog.activity.ProfileActivity_;
 import com.devnup.artcatalog.activity.profile.ProfileInfoData;
 import com.devnup.artcatalog.view.card.ContainedCardView;
 import com.devnup.artcatalog.view.card.ContainedCardView_;
@@ -135,7 +136,11 @@ public class ArtworkProfileInfoData extends ProfileInfoData {
             containedCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArtPeriodProfileActivity_.intent(getContext()).mid(mid).start();
+                    ProfileActivity_
+                            .intent(getContext())
+                            .type(ProfileActivity.Type.ART_PERIOD)
+                            .mid(mid)
+                            .start();
                 }
             });
 

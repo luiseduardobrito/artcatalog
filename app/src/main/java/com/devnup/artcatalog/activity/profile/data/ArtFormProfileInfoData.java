@@ -1,19 +1,18 @@
-package com.devnup.artcatalog.activity.profile.impl;
+package com.devnup.artcatalog.activity.profile.data;
 
 import android.content.Context;
 import android.view.View;
 
 import com.devnup.artcatalog.R;
-import com.devnup.artcatalog.activity.ArtistProfileActivity_;
-import com.devnup.artcatalog.activity.ArtworkProfileActivity_;
+import com.devnup.artcatalog.activity.ProfileActivity;
+import com.devnup.artcatalog.activity.ProfileActivity_;
 import com.devnup.artcatalog.activity.profile.ProfileInfoData;
 import com.devnup.artcatalog.view.card.ContainedCardView;
 import com.devnup.artcatalog.view.card.ContainedCardView_;
 import com.devnup.artcatalog.ws.FreebaseUtil;
 import com.devnup.artcatalog.ws.model.FreebaseReferenceModel;
-import com.devnup.artcatalog.ws.model.VisualArtPeriodModel;
+import com.devnup.artcatalog.ws.model.VisualArtFormModel;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,25 +20,25 @@ import java.util.List;
  * @author luiseduardobrito
  * @since 12/11/14.
  */
-public class ArtPeriodProfileInfoData extends ProfileInfoData {
+public class ArtFormProfileInfoData extends ProfileInfoData {
 
     private Context context;
-    private final VisualArtPeriodModel period;
+    private final VisualArtFormModel artForm;
 
-    public ArtPeriodProfileInfoData(Context context, VisualArtPeriodModel period) {
+    public ArtFormProfileInfoData(Context context, VisualArtFormModel artForm) {
         this.context = context;
-        this.period = period;
+        this.artForm = artForm;
     }
 
     @Override
     public String getMid() {
-        return period.getMid();
+        return artForm.getMid();
     }
 
     @Override
     public String getWikipediaId() {
 
-        List<String> wiki = period.getWikipedia();
+        List<String> wiki = artForm.getWikipedia();
 
         if (wiki != null && wiki.size() > 0) {
             return wiki.get(0);
@@ -50,49 +49,36 @@ public class ArtPeriodProfileInfoData extends ProfileInfoData {
 
     @Override
     public String getTitle() {
-        return period.getName();
+        return artForm.getName();
     }
 
     @Override
     public String getSubtitle() {
-
-        StringBuilder subtitleStr = new StringBuilder();
-        SimpleDateFormat simple = new SimpleDateFormat("yyyy");
-
-        if (period.getDateBegun() != null) {
-
-            subtitleStr
-                    .append(subtitleStr.length() > 0 ? " - " : "")
-                    .append(period.getDateBegun());
-        }
-
-        if (period.getDateEnded() != null) {
-
-            // TODO: resolver essa porquice
-            if (period.getDateBegun() != null && period.getDateBegun().equals(period.getDateEnded())) {
-                return subtitleStr.toString();
-            }
-
-            subtitleStr
-                    .append(subtitleStr.length() > 0 ? " to " : "")
-                    .append(period.getDateEnded());
-        }
-
-        return subtitleStr.toString();
+        return "";
     }
 
     @Override
     public String getImageURL() {
-        return FreebaseUtil.getImageURL(period.getMid());
+        return FreebaseUtil.getImageURL(artForm.getMid());
     }
 
     @Override
     public List<String> getShowcaseImagesURL() {
 
         List<String> result = new ArrayList<>();
+        List<FreebaseReferenceModel> artworks = artForm.getArtworks();
 
-        for (FreebaseReferenceModel artwork : period.getArtworks()) {
-            result.add(FreebaseUtil.getImageURL(artwork.getMid()));
+        if (artworks != null && artworks.size() > 0) {
+
+            artworks = artworks.subList(0, Math.min(artworks.size(), 3));
+
+            for (FreebaseReferenceModel artwork : artworks) {
+                result.add(FreebaseUtil.getImageURL(artwork.getMid()));
+            }
+
+        } else {
+
+            result.add(FreebaseUtil.getImageURL(artForm.getMid()));
         }
 
         return result;
@@ -100,12 +86,12 @@ public class ArtPeriodProfileInfoData extends ProfileInfoData {
 
     @Override
     public String getDescription() {
-        return null;
+        return "";
     }
 
     @Override
     public String[] getSectionTitles() {
-        return getContext().getResources().getStringArray(R.array.period_profile_sections);
+        return getContext().getResources().getStringArray(R.array.artform_profile_sections);
     }
 
     @Override
@@ -120,8 +106,8 @@ public class ArtPeriodProfileInfoData extends ProfileInfoData {
         containedCardView.setVisibility(View.VISIBLE);
         containedCardView.setClickable(true);
 
-        List<FreebaseReferenceModel> artists = period.getArtists();
-        List<FreebaseReferenceModel> artworks = period.getArtworks();
+        List<FreebaseReferenceModel> artists = artForm.getArtists();
+        List<FreebaseReferenceModel> artworks = artForm.getArtworks();
 
         // Period artists
         if (section == 1 && artists != null && artists.size() > position) {
@@ -134,7 +120,12 @@ public class ArtPeriodProfileInfoData extends ProfileInfoData {
             containedCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArtistProfileActivity_.intent(getContext()).mid(mid).start();
+
+                    ProfileActivity_
+                            .intent(getContext())
+                            .type(ProfileActivity.Type.ARTIST)
+                            .mid(mid)
+                            .start();
                 }
             });
         }
@@ -150,7 +141,12 @@ public class ArtPeriodProfileInfoData extends ProfileInfoData {
             containedCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArtworkProfileActivity_.intent(getContext()).mid(mid).start();
+
+                    ProfileActivity_
+                            .intent(getContext())
+                            .type(ProfileActivity.Type.ARTWORK)
+                            .mid(mid)
+                            .start();
                 }
             });
 

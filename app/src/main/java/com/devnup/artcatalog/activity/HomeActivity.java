@@ -32,7 +32,7 @@ import com.devnup.artcatalog.view.list.CardListView;
 import com.devnup.artcatalog.view.list.adapter.CardListAdapter;
 import com.devnup.artcatalog.ws.FreebaseUtil;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
-import com.devnup.artcatalog.ws.response.MQLArtistsResponse;
+import com.devnup.artcatalog.ws.response.MQLResponse;
 import com.devnup.artcatalog.ws.service.ArtRestService;
 import com.jpardogo.android.googleprogressbar.library.FoldingCirclesDrawable;
 
@@ -103,7 +103,7 @@ public class HomeActivity extends BaseDrawerActivity {
     }
 
     @UiThread
-    void notifyResult(MQLArtistsResponse response) {
+    void notifyResult(MQLResponse<VisualArtistModel> response) {
 
         if (loading) {
 
@@ -130,7 +130,14 @@ public class HomeActivity extends BaseDrawerActivity {
                 card.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ArtistProfileActivity_.intent(HomeActivity.this).mid(mid).start();
+
+                        ProfileActivity_
+                                .intent(HomeActivity.this)
+                                .type(ProfileActivity.Type.ARTIST)
+                                .mid(mid)
+                                .start();
+
+                        //ArtistProfileActivity_.intent(HomeActivity.this).mid(mid).start();
                     }
                 });
 

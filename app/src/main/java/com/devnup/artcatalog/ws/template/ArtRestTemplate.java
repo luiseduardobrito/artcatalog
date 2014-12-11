@@ -1,8 +1,10 @@
 package com.devnup.artcatalog.ws.template;
 
-import com.devnup.artcatalog.ws.response.MQLArtPeriodsResponse;
-import com.devnup.artcatalog.ws.response.MQLArtistsResponse;
-import com.devnup.artcatalog.ws.response.MQLArtworksResponse;
+import com.devnup.artcatalog.ws.model.VisualArtFormModel;
+import com.devnup.artcatalog.ws.model.VisualArtPeriodModel;
+import com.devnup.artcatalog.ws.model.VisualArtistModel;
+import com.devnup.artcatalog.ws.model.VisualArtworkModel;
+import com.devnup.artcatalog.ws.response.MQLResponse;
 
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Rest;
@@ -20,14 +22,17 @@ public interface ArtRestTemplate {
     public Resource getImage(String id);
 
     @Get("https://www.googleapis.com/freebase/v1/mqlread?query={query}&cursor")
-    public MQLArtistsResponse readUsingMQL(String query);
+    public MQLResponse<VisualArtistModel> readUsingMQL(String query);
 
     @Get("https://www.googleapis.com/freebase/v1/mqlread?query={query}&cursor={cursor}")
-    public MQLArtistsResponse readUsingMQL(String query, String cursor);
+    public MQLResponse<VisualArtistModel> readUsingMQL(String query, String cursor);
 
     @Get("https://www.googleapis.com/freebase/v1/mqlread?query={query}&cursor")
-    public MQLArtworksResponse readArtworksUsingMQL(String query);
+    public MQLResponse<VisualArtworkModel> readArtworksUsingMQL(String query);
 
     @Get("https://www.googleapis.com/freebase/v1/mqlread?query={query}&cursor")
-    public MQLArtPeriodsResponse readArtPeriodsUsingMQL(String query);
+    public MQLResponse<VisualArtPeriodModel> readArtPeriodsUsingMQL(String query);
+
+    @Get("https://www.googleapis.com/freebase/v1/mqlread?query={query}&cursor")
+    public MQLResponse<VisualArtFormModel> readArtFormsUsingMQL(String query);
 }

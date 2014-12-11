@@ -1,11 +1,11 @@
 package com.devnup.artcatalog.ws.service;
 
+import com.devnup.artcatalog.ws.model.BaseModel;
+import com.devnup.artcatalog.ws.model.VisualArtFormModel;
 import com.devnup.artcatalog.ws.model.VisualArtPeriodModel;
 import com.devnup.artcatalog.ws.model.VisualArtistModel;
 import com.devnup.artcatalog.ws.model.VisualArtworkModel;
-import com.devnup.artcatalog.ws.response.MQLArtPeriodsResponse;
-import com.devnup.artcatalog.ws.response.MQLArtistsResponse;
-import com.devnup.artcatalog.ws.response.MQLArtworksResponse;
+import com.devnup.artcatalog.ws.response.MQLResponse;
 import com.devnup.artcatalog.ws.template.ArtRestTemplate;
 
 import org.androidannotations.annotations.EBean;
@@ -23,10 +23,10 @@ public class ArtRestService {
 
     public String cacheCursor;
 
-    public MQLArtistsResponse readUsingMQL(String query) {
+    public MQLResponse<VisualArtistModel> readUsingMQL(String query) {
 
         // Perform API query to check response cursor
-        MQLArtistsResponse response = rest.readUsingMQL(query);
+        MQLResponse<VisualArtistModel> response = rest.readUsingMQL(query);
 
         // Update cache cursor
         cacheCursor = (response != null ? response.getCursor() : null);
@@ -35,14 +35,14 @@ public class ArtRestService {
         return response;
     }
 
-    public MQLArtistsResponse readUsingMQL(String query, Boolean loadMore) {
+    public MQLResponse<VisualArtistModel> readUsingMQL(String query, Boolean loadMore) {
 
         if (!loadMore || cacheCursor == null || cacheCursor.isEmpty()) {
             return readUsingMQL(query);
         }
 
         // Perform API query to check response cursor
-        MQLArtistsResponse response = rest.readUsingMQL(query, cacheCursor);
+        MQLResponse<VisualArtistModel> response = rest.readUsingMQL(query, cacheCursor);
 
         // Update cache cursor
         cacheCursor = (response != null ? response.getCursor() : null);
@@ -53,7 +53,7 @@ public class ArtRestService {
 
     public VisualArtistModel getVisualArtist(String mid) {
 
-        MQLArtistsResponse response = rest.readUsingMQL(VisualArtistModel.toFreebaseQuery(mid));
+        MQLResponse<VisualArtistModel> response = rest.readUsingMQL(VisualArtistModel.toFreebaseQuery(mid));
 
         if (response != null && response.getResult() != null && response.getResult().size() > 0) {
             return response.getResult().get(0);
@@ -64,7 +64,7 @@ public class ArtRestService {
 
     public VisualArtworkModel getVisualArtwork(String mid) {
 
-        MQLArtworksResponse response = rest.readArtworksUsingMQL(VisualArtworkModel.toFreebaseQuery(mid));
+        MQLResponse<VisualArtworkModel> response = rest.readArtworksUsingMQL(VisualArtworkModel.toFreebaseQuery(mid));
 
         if (response != null && response.getResult() != null && response.getResult().size() > 0) {
             return response.getResult().get(0);
@@ -75,7 +75,18 @@ public class ArtRestService {
 
     public VisualArtPeriodModel getVisualArtPeriod(String mid) {
 
-        MQLArtPeriodsResponse response = rest.readArtPeriodsUsingMQL(VisualArtPeriodModel.toFreebaseQuery(mid));
+        MQLResponse<VisualArtPeriodModel> response = rest.readArtPeriodsUsingMQL(VisualArtPeriodModel.toFreebaseQuery(mid));
+
+        if (response != null && response.getResult() != null && response.getResult().size() > 0) {
+            return response.getResult().get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public VisualArtFormModel getVisualArtForm(String mid) {
+
+        MQLResponse<VisualArtFormModel> response = rest.readArtFormsUsingMQL(VisualArtFormModel.toFreebaseQuery(mid));
 
         if (response != null && response.getResult() != null && response.getResult().size() > 0) {
             return response.getResult().get(0);

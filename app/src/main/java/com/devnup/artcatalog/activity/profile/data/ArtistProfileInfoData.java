@@ -1,11 +1,11 @@
-package com.devnup.artcatalog.activity.profile.impl;
+package com.devnup.artcatalog.activity.profile.data;
 
 import android.content.Context;
 import android.view.View;
 
 import com.devnup.artcatalog.R;
-import com.devnup.artcatalog.activity.ArtPeriodProfileActivity_;
-import com.devnup.artcatalog.activity.ArtworkProfileActivity_;
+import com.devnup.artcatalog.activity.ProfileActivity;
+import com.devnup.artcatalog.activity.ProfileActivity_;
 import com.devnup.artcatalog.activity.profile.ProfileInfoData;
 import com.devnup.artcatalog.view.card.ContainedCardView;
 import com.devnup.artcatalog.view.card.ContainedCardView_;
@@ -77,6 +77,8 @@ public class ArtistProfileInfoData extends ProfileInfoData {
 
         if (artworks != null && artworks.size() > 0) {
 
+            artworks = artworks.subList(0, Math.min(artworks.size(), 3));
+
             for (FreebaseReferenceModel artwork : artworks) {
                 result.add(FreebaseUtil.getImageURL(artwork.getMid()));
             }
@@ -139,7 +141,12 @@ public class ArtistProfileInfoData extends ProfileInfoData {
             containedCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArtworkProfileActivity_.intent(context).mid(mid).start();
+
+                    ProfileActivity_
+                            .intent(getContext())
+                            .type(ProfileActivity.Type.ARTWORK)
+                            .mid(mid)
+                            .start();
                 }
             });
 
@@ -156,7 +163,12 @@ public class ArtistProfileInfoData extends ProfileInfoData {
             containedCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ArtPeriodProfileActivity_.intent(context).mid(mid).start();
+
+                    ProfileActivity_
+                            .intent(getContext())
+                            .type(ProfileActivity.Type.ART_PERIOD)
+                            .mid(mid)
+                            .start();
                 }
             });
         }
@@ -164,8 +176,22 @@ public class ArtistProfileInfoData extends ProfileInfoData {
         // Fill Art Form cards
         else if (section == 3 && artForms != null && artForms.size() > position) {
 
+            final String mid = artForms.get(position).getMid();
+
             containedCardView.setTitle(artForms.get(position).getName());
-            containedCardView.setImageUrl(FreebaseUtil.getImageURL(artForms.get(position).getMid()));
+            containedCardView.setImageUrl(FreebaseUtil.getImageURL(mid));
+
+            containedCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ProfileActivity_
+                            .intent(getContext())
+                            .type(ProfileActivity.Type.ART_FORM)
+                            .mid(mid)
+                            .start();
+                }
+            });
 
         } else {
 

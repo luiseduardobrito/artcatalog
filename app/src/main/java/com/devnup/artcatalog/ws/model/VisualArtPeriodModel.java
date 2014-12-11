@@ -48,14 +48,14 @@ public class VisualArtPeriodModel extends FreebaseTypedReferenceModel {
 
     public static String toFreebaseQuery() {
 
-        VisualArtPeriodModel artwork = new VisualArtPeriodModel();
-        artwork.artists.add(new FreebaseReferenceModel());
-        artwork.artworks.add(new FreebaseReferenceModel());
+        VisualArtPeriodModel period = new VisualArtPeriodModel();
+        period.artists.add(new FreebaseReferenceModel());
+        period.artworks.add(new FreebaseReferenceModel());
 
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            return "[" + mapper.writeValueAsString(artwork) + "]";
+            return "[" + mapper.writeValueAsString(period) + "]";
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -64,15 +64,15 @@ public class VisualArtPeriodModel extends FreebaseTypedReferenceModel {
 
     public static String toFreebaseQuery(String mid) {
 
-        VisualArtPeriodModel artwork = new VisualArtPeriodModel();
-        artwork.mid = mid;
-        artwork.artists.add(new FreebaseReferenceModel());
-        artwork.artworks.add(new FreebaseReferenceModel());
+        VisualArtPeriodModel period = new VisualArtPeriodModel();
+        period.mid = mid;
+        period.artists.add(new FreebaseReferenceModel());
+        period.artworks.add(new FreebaseReferenceModel());
 
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            return "[" + mapper.writeValueAsString(artwork) + "]";
+            return "[" + mapper.writeValueAsString(period) + "]";
         } catch (IOException e) {
             e.printStackTrace();
             return null;
