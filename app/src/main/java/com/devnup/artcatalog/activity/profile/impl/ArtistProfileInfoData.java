@@ -56,16 +56,12 @@ public class ArtistProfileInfoData extends ProfileInfoData {
     public List<String> getShowcaseImagesURL() {
 
         List<String> result = new ArrayList<>();
-        List<FreebaseReferenceModel> images = artist.getImage();
+        List<FreebaseReferenceModel> artworks = artist.getArtworks();
 
-        if (images != null && images.size() > 0) {
+        if (artworks != null && artworks.size() > 0) {
 
-            if (images.size() > 1) {
-                images.remove(0);
-            }
-
-            for (FreebaseReferenceModel image : images) {
-                result.add(FreebaseUtil.getImageURL(images.get(0).getMid()));
+            for (FreebaseReferenceModel artwork : artworks) {
+                result.add(FreebaseUtil.getImageURL(artwork.getMid()));
             }
 
         } else {

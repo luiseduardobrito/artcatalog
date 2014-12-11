@@ -166,10 +166,8 @@ public abstract class BaseProfileActivity extends BaseActivity {
         if (getData() != null) {
 
             SpannableString mSpannableString = SpannableString.valueOf(getData().getTitle());
-
             mAlphaForegroundColorSpan.setAlpha(alpha);
             mSpannableString.setSpan(mAlphaForegroundColorSpan, 0, mSpannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
             getSupportActionBar().setTitle(mSpannableString);
 
         } else {
@@ -193,13 +191,8 @@ public abstract class BaseProfileActivity extends BaseActivity {
     protected void setupActionBar() {
 
         if (mToolbar != null) {
-
             mActionBarBackgroundDrawable = mToolbar.getBackground();
             setToolbarAlpha(0f);
-
-            if (getData() != null) {
-                mToolbar.setTitle(getData().getTitle());
-            }
         }
 
         //getActionBarTitleView().setAlpha(0f);
