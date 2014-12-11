@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import com.devnup.artcatalog.R;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.UiThread;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

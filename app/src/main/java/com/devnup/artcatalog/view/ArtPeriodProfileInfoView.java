@@ -67,7 +67,7 @@ public class ArtPeriodProfileInfoView extends FrameLayout {
                         .append(period.getDateBegun());
             }
 
-            if (period.getDateEnded() != null && period.getDateBegun().equals(period.getDateEnded())) {
+            if (period.getDateEnded() != null && !period.getDateBegun().equals(period.getDateEnded())) {
 
                 subtitleStr
                         .append(subtitleStr.length() > 0 ? " to " : "")
