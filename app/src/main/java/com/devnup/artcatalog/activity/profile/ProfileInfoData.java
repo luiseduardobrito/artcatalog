@@ -16,6 +16,10 @@ import java.util.List;
  */
 public abstract class ProfileInfoData {
 
+    public abstract String getMid();
+
+    public abstract String getWikipediaId();
+
     public abstract String getTitle();
 
     public abstract String getSubtitle();

@@ -32,6 +32,23 @@ public class ArtworkProfileInfoData extends ProfileInfoData {
     }
 
     @Override
+    public String getMid() {
+        return artwork.getMid();
+    }
+
+    @Override
+    public String getWikipediaId() {
+
+        List<String> wiki = artwork.getWikipedia();
+
+        if (wiki != null && wiki.size() > 0) {
+            return wiki.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
     public String getTitle() {
         return artwork.getName();
     }

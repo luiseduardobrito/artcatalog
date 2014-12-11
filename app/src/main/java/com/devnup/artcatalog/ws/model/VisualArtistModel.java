@@ -46,6 +46,9 @@ public class VisualArtistModel extends FreebaseTypedReferenceModel {
     @JsonProperty("/people/person/nationality")
     List<FreebaseReferenceModel> nationality = new ArrayList<>();
 
+    @JsonProperty("/wikipedia/topic/en_id")
+    List<String> wikipedia = new ArrayList<>();
+
     public static String toFreebaseQuery() {
 
         VisualArtistModel artist = new VisualArtistModel();
@@ -170,5 +173,13 @@ public class VisualArtistModel extends FreebaseTypedReferenceModel {
 
     public void setImage(List<FreebaseReferenceModel> image) {
         this.image = image;
+    }
+
+    public List<String> getWikipedia() {
+        return wikipedia;
+    }
+
+    public void setWikipedia(List<String> wikipedia) {
+        this.wikipedia = wikipedia;
     }
 }

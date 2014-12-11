@@ -40,6 +40,9 @@ public class VisualArtPeriodModel extends FreebaseTypedReferenceModel {
     @JsonProperty("/visual_art/art_period_movement/associated_artworks")
     List<FreebaseReferenceModel> artworks = new ArrayList<>();
 
+    @JsonProperty("/wikipedia/topic/en_id")
+    List<String> wikipedia = new ArrayList<>();
+
     public VisualArtPeriodModel() {
     }
 
@@ -155,5 +158,13 @@ public class VisualArtPeriodModel extends FreebaseTypedReferenceModel {
 
     public void setArtworks(List<FreebaseReferenceModel> artworks) {
         this.artworks = artworks;
+    }
+
+    public List<String> getWikipedia() {
+        return wikipedia;
+    }
+
+    public void setWikipedia(List<String> wikipedia) {
+        this.wikipedia = wikipedia;
     }
 }

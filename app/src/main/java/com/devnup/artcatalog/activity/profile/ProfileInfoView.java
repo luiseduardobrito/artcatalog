@@ -1,7 +1,10 @@
 package com.devnup.artcatalog.activity.profile;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,6 +13,7 @@ import com.devnup.artcatalog.R;
 import com.devnup.artcatalog.view.ProfileButtonView;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
@@ -52,6 +56,7 @@ public class ProfileInfoView extends FrameLayout {
         super(context, attrs, defStyleAttr);
     }
 
+    @AfterViews
     void init() {
 
         mProfileLeftButtonView.setImage(R.drawable.ic_favorite_outline_black_36dp);
@@ -61,7 +66,7 @@ public class ProfileInfoView extends FrameLayout {
         mProfileRightButtonView.setText("Wikipedia");
     }
 
-    public void setData(ProfileInfoData data) {
+    public void setData(final ProfileInfoData data) {
 
         if (data != null) {
 
@@ -85,6 +90,32 @@ public class ProfileInfoView extends FrameLayout {
                         .fit()
                         .centerCrop()
                         .into(mImageView);
+
+            }
+
+            if(data.getWikipediaId() != null) {
+
+                mProfileRightButtonView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String url = "http://en.wikipedia.org/wiki?curid=" + data.getWikipediaId();
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        getContext().startActivity(i);
+                    }
+                });
+
+            } else {
+
+                mProfileRightButtonView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String url = "http://data.devnup.com/api/wikipedia/redirect?query=" + data.getTitle();
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        getContext().startActivity(i);
+                    }
+                });
 
             }
         }

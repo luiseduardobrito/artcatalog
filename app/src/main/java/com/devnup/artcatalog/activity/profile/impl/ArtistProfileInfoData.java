@@ -32,6 +32,23 @@ public class ArtistProfileInfoData extends ProfileInfoData {
     }
 
     @Override
+    public String getMid() {
+        return artist.getMid();
+    }
+
+    @Override
+    public String getWikipediaId() {
+
+        List<String> wiki = artist.getWikipedia();
+
+        if (wiki != null && wiki.size() > 0) {
+            return wiki.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
     public String getTitle() {
         return artist.getName();
     }

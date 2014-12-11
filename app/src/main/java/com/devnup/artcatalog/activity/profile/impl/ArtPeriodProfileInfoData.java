@@ -32,6 +32,23 @@ public class ArtPeriodProfileInfoData extends ProfileInfoData {
     }
 
     @Override
+    public String getMid() {
+        return period.getMid();
+    }
+
+    @Override
+    public String getWikipediaId() {
+
+        List<String> wiki = period.getWikipedia();
+
+        if (wiki != null && wiki.size() > 0) {
+            return wiki.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
     public String getTitle() {
         return period.getName();
     }

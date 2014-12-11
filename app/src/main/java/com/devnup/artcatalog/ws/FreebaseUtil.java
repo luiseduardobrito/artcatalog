@@ -57,6 +57,6 @@ public class FreebaseUtil {
     }
 
     public static String getImageURL(String id) {
-        return "https://usercontent.googleapis.com/freebase/v1/image" + id + "?maxwidth=225&maxheight=225&mode=fillcropmid";
+        return "http://devnup-data.herokuapp.com/api/freebase/image?mid=" + id;
     }
 }
